@@ -14,7 +14,7 @@ class AppCine():
     n_peliculas: Número de películas que hay dentro de la aplicacíon
     programaciones: Programaciones para las salas y complejos de cine
     n_programaciones: Número de programaciones
-
+#SAPOS PERROS
 
     CONTANTES:
     MAX_USUARIOS: Máximo de usuarios que pueden existir en la aplicación
