@@ -3,7 +3,7 @@ import programacion as Programacion
 import pelicula as Pelicula
 import numpy as np
 class AppCine():
-
+#a
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
 
     ATRIBUTOS:
