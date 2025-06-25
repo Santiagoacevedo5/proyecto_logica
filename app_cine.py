@@ -5,7 +5,7 @@ import numpy as np
 class AppCine():
     "a"
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
-
+sss
     ATRIBUTOS:
     usuarios: Los usuarios de la aplicación
     n_usuarios: Número de usuarios en la aplicación
