@@ -3,9 +3,7 @@ import programacion as Programacion
 import pelicula as Pelicula
 import numpy as np
 class AppCine():
-    "a"
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
-sss
     ATRIBUTOS:
     usuarios: Los usuarios de la aplicación
     n_usuarios: Número de usuarios en la aplicación
@@ -14,8 +12,6 @@ sss
     n_peliculas: Número de películas que hay dentro de la aplicacíon
     programaciones: Programaciones para las salas y complejos de cine
     n_programaciones: Número de programaciones
-#SAPOS PERROS
-#AAAAAAAAA
     CONTANTES:
     MAX_USUARIOS: Máximo de usuarios que pueden existir en la aplicación
     MAX_PELICULAS: Máximo de películas que pueden existir en la aplicación
