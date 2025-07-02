@@ -1,5 +1,6 @@
 #ESTA CLASE SIGUE EN DESARROLLO. AUN NO SE HA TERMINADO NI IMPLEMENTADO
 import numpy as np
+import programacion as Programacion
 class Sala():
 
     """Esta clase representa la plantilla para la creación de cada sala
@@ -10,14 +11,14 @@ class Sala():
     programación: la programación de películas de la sala
     """
     id=int
-    tamaño=int
+    tamano=int
     programacion=Programacion
 
     TAMAÑO=36
 
     def __init__(self):
         self.id=0
-        self.tamaño=self.TAMAÑO
+        self.tamano=self.TAMAÑO
 
     def pedir_datos(self):
         """Este método se encarga de pedir los datos y asignarlos a su atributo correspondiente"""

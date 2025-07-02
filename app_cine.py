@@ -34,7 +34,7 @@ class AppCine():
         self.usuarios=np.full((self.MAX_USUARIOS), fill_value=None, dtype=object)
         self.peliculas=np.full((self.MAX_PELICULAS), fill_value=None, dtype=object)
 
-        # Si no hay usaurios se crean 2 ADMIN por defecto
+        # Si no hay usuarios se crean 2 ADMIN por defecto
         if (self.n_usuarios == 0):
             self.usuarios[0]=Usuario("Sofia", 123, "sofia@udea.edu.co", "hola123")
             self.usuarios[0].cambiar_tipo(Usuario.PERFIL_ADMIN)
