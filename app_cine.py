@@ -28,27 +28,85 @@ class AppCine():
     MAX_PELICULAS=40
 
     def __init__(self):
+        # Carga los usuarios almacenados en el archivo de usuarios
+        self.usuarios, self.n_usuarios = self.cargar_datos(Usuario.ARCHIVO, self.MAX_USUARIOS)
+
         self.usuarios=np.full((self.MAX_USUARIOS), fill_value=None, dtype=object)
         self.peliculas=np.full((self.MAX_PELICULAS), fill_value=None, dtype=object)
 
-        self.usuarios[0]=Usuario("Sofia", 123, "sofia@udea.edu.co", "hola123")
-        self.usuarios[0].cambiar_tipo(Usuario.PERFIL_ADMIN)
-
-        self.usuarios[1]=Usuario("Juan", 456, "juan@udea.edu.co", "juan123")
-        self.usuarios[1].cambiar_tipo(Usuario.PERFIL_VENDEDOR)
-        self.n_usuarios=2
+        # Si no hay usuarios se crean 2 ADMIN por defecto
+        if (self.n_usuarios == 0):
+            self.usuarios[0]=Usuario("Sofia", 123, "sofia@udea.edu.co", "hola123")
+            self.usuarios[0].cambiar_tipo(Usuario.PERFIL_ADMIN)
+            self.usuarios[1]=Usuario("Juan", 456, "juan@udea.edu.co", "juan123")
+            self.usuarios[1].cambiar_tipo(Usuario.PERFIL_VENDEDOR)
+            self.n_usuarios=2
+        # Indica que no hay usuario autenticado
         self.usuario_autenticado=None
         self.n_peliculas=0
+    #Jesica Estor 1/07/2025
+    def cargar_datos(self, archivo, num_max_datos):
+        """ Este método se encarga de cargar los datos de un archivo en un arreglo
 
+            PARAMETROS
+                archivo = URL relativa del archivo a abrir
+                num_max_datos = indica el tamaño máximo de datos que almacena el arreglo
+
+            RETORNA
+                arreglo_nuevo = arreglo con los datos cargados
+                n_datos = cantidad de datos cargados en el arreglo
+        """
+        try:
+            arreglo_nuevo = np.load(archivo, allow_pickle=True)
+            i = 0
+            while (arreglo_nuevo[i] != None):
+                i += 1
+            return arreglo_nuevo, i
+        except (FileNotFoundError, EOFError):
+            print (f"No se pudo cargar el archivo {archivo}. Se creó un arreglo de datos vacío!")
+            arreglo_nuevo = np.full((num_max_datos), fill_value=None, dtype=object)
+            return arreglo_nuevo, 0
+    #Jesica Estor 1/07/2025   
+    def guardar_datos(self, arreglo_nuevo, archivo):
+        """ Este método almacena los datos de un arreglo en un archivo
+
+            PARAMETROS
+                arreglo_nuevo = arreglo Numpy con los datos a alamcenar creado en el metodo cargar_datos
+                archivo = URL relativa del archivo en el que se almacenarán los datos
+
+            RETORNA
+                True si almacena los datos correctamente en el archivo
+                False si no logra almacenar los datos en el archivo
+        """
+        try:
+            np.save(archivo, arreglo_nuevo)
+            return True
+        except (FileNotFoundError, EOFError):
+            print (f"Error: Almacenimiento de datos en el archivo {archivo} no se logró llevar acabo.")
+            return False
+
+    #Jesica Estor 1/07/2025
     def registrar_usuario(self):
         """Este método se encarga de registrar nuevos usuarios"""
-        usuario=Usuario()
-        usuario.pedir_datos()
-        self.usuarios[self.n_usuarios]=usuario
-        self.n_usuarios+=1
+        if (self.n_usuarios < self.MAX_USUARIOS):
+            # Crea un usuario nuevo y pide sus datos
+            usuario=Usuario()
+            usuario.pedir_datos()
+            self.usuarios[self.n_usuarios]=usuario
+            self.n_usuarios+=1
+            print("El usuario se registró de manera exitosa")
+            # Guarda en el archivo los datos de los usuarios
+            if (not self.guardar_datos(self.usuarios, Usuario.ARCHIVO)):
+                print("ERROR!: No se pudo guardar el archivo de usuarios")
+            else:
+                print("Se actualizó el archivo de usuarios de manera exitosa")
+        else:
+            print("El arreglo de usuarios se encuentra lleno, no es posible agregar más.")
 
     def autenticar_usuario(self):
-        """Este método se encarga de autenticas y validar la informacion de los usuarios que estan entrando a la aplicación"""
+        """Este método se encarga de autenticar y validar la información de los usuarios que estan entrando a la aplicación
+        RETORNA
+        True si se pudo autenticar el usuario, False en caso contrario"""
         print("\n%% AUTENTICAR USUARIO %%\n")
         id=int(input("Introduce el id del usuario: "))
         contraseña=input("Introduce la contraseña del usuario: ")
