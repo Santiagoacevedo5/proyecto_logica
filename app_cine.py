@@ -1,11 +1,14 @@
-import usuario as Usuario
-import programacion as programacion
-import pelicula as Pelicula
+from usuario import Usuario
+from funcion import Funcion
+from pelicula import Pelicula
 import numpy as np
-import complejo_salas as complejo_salas
-import copy
+from sala import Sala
+from programacion import Programacion
+from datetime import timedelta
+
 class AppCine():
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
+
     ATRIBUTOS:
     usuarios: Los usuarios de la aplicación
     n_usuarios: Número de usuarios en la aplicación
@@ -14,6 +17,8 @@ class AppCine():
     n_peliculas: Número de películas que hay dentro de la aplicacíon
     programaciones: Programaciones para las salas y complejos de cine
     n_programaciones: Número de programaciones
+
+
     CONTANTES:
     MAX_USUARIOS: Máximo de usuarios que pueden existir en la aplicación
     MAX_PELICULAS: Máximo de películas que pueden existir en la aplicación
@@ -23,99 +28,50 @@ class AppCine():
     usuario_autenticado=Usuario
     peliculas=np.ndarray
     n_peliculas=int
-    programaciones=np.ndarray
-    n_programaciones=0
+    programacion=Programacion
+    salas=np.ndarray
+    n_salas=int
 
     MAX_USUARIOS=30
     MAX_PELICULAS=40
+    MAX_SALAS=10
 
     def __init__(self):
-        # Carga los usuarios almacenados en el archivo de usuarios
-        self.usuarios, self.n_usuarios = self.cargar_datos(Usuario.ARCHIVO, self.MAX_USUARIOS)
-
         self.usuarios=np.full((self.MAX_USUARIOS), fill_value=None, dtype=object)
         self.peliculas=np.full((self.MAX_PELICULAS), fill_value=None, dtype=object)
+        self.salas=np.full((self.MAX_SALAS), fill_value=None, dtype=object)
 
-        # Si no hay usuarios se crean 2 ADMIN por defecto
-        if (self.n_usuarios == 0):
-            self.usuarios[0]=Usuario("Sofia", 123, "sofia@udea.edu.co", "hola123")
-            self.usuarios[0].cambiar_tipo(Usuario.PERFIL_ADMIN)
-            self.usuarios[1]=Usuario("Juan", 456, "juan@udea.edu.co", "juan123")
-            self.usuarios[1].cambiar_tipo(Usuario.PERFIL_VENDEDOR)
-            self.n_usuarios=2
-        # Indica que no hay usuario autenticado
+        self.usuarios[0]=Usuario("Sofia", 123, "sofia@udea.edu.co", "hola123")
+        self.usuarios[0].cambiar_tipo(Usuario.PERFIL_ADMIN)
+
+        self.usuarios[1]=Usuario("Juan", 456, "juan@udea.edu.co", "juan123")
+        self.usuarios[1].cambiar_tipo(Usuario.PERFIL_VENDEDOR)
+        self.n_usuarios=2
         self.usuario_autenticado=None
         self.n_peliculas=0
-    #Jesica Estor 1/07/2025
-    def cargar_datos(self, archivo, num_max_datos):
-        """ Este método se encarga de cargar los datos de un archivo en un arreglo
+        self.n_salas=0
+        self.programacion=Programacion()
 
-            PARAMETROS
-                archivo = URL relativa del archivo a abrir
-                num_max_datos = indica el tamaño máximo de datos que almacena el arreglo
-
-            RETORNA
-                arreglo_nuevo = arreglo con los datos cargados
-                n_datos = cantidad de datos cargados en el arreglo
-        """
-        try:
-            arreglo_nuevo = np.load(archivo, allow_pickle=True)
-            i = 0
-            while (arreglo_nuevo[i] != None):
-                i += 1
-            return arreglo_nuevo, i
-        except (FileNotFoundError, EOFError):
-            print (f"No se pudo cargar el archivo {archivo}. Se creó un arreglo de datos vacío!")
-            arreglo_nuevo = np.full((num_max_datos), fill_value=None, dtype=object)
-            return arreglo_nuevo, 0
-    #Jesica Estor 1/07/2025   
-    def guardar_datos(self, arreglo_nuevo, archivo):
-        """ Este método almacena los datos de un arreglo en un archivo
-
-            PARAMETROS
-                arreglo_nuevo = arreglo Numpy con los datos a alamcenar creado en el metodo cargar_datos
-                archivo = URL relativa del archivo en el que se almacenarán los datos
-
-            RETORNA
-                True si almacena los datos correctamente en el archivo
-                False si no logra almacenar los datos en el archivo
-        """
-        try:
-            np.save(archivo, arreglo_nuevo)
-            return True
-        except (FileNotFoundError, EOFError):
-            print (f"Error: Almacenimiento de datos en el archivo {archivo} no se logró llevar acabo.")
-            return False
-
-    #Jesica Estor 1/07/2025
     def registrar_usuario(self):
         """Este método se encarga de registrar nuevos usuarios"""
-        if (self.n_usuarios < self.MAX_USUARIOS):
-            # Crea un usuario nuevo y pide sus datos
-            usuario=Usuario()
-            usuario.pedir_datos()
-            self.usuarios[self.n_usuarios]=usuario
-            self.n_usuarios+=1
-            print("El usuario se registró de manera exitosa")
-            # Guarda en el archivo los datos de los usuarios
-            if (not self.guardar_datos(self.usuarios, Usuario.ARCHIVO)):
-                print("ERROR!: No se pudo guardar el archivo de usuarios")
-            else:
-                print("Se actualizó el archivo de usuarios de manera exitosa")
-        else:
-            print("El arreglo de usuarios se encuentra lleno, no es posible agregar más.")
+        usuario=Usuario()
+        usuario.pedir_datos()
+        for i in range(self.n_usuarios):
+            if self.usuarios[i].id==usuario.id or self.usuarios[i].email==usuario.email or self.usuarios[i].contrasena==usuario.contrasena:
+                print("Usuario ya existente. Introduce un usuario nuevo.")
+                usuario.pedir_datos
+        self.usuarios[self.n_usuarios]=usuario
+        self.n_usuarios+=1
 
     def autenticar_usuario(self):
-        """Este método se encarga de autenticar y validar la información de los usuarios que estan entrando a la aplicación
-        RETORNA
-        True si se pudo autenticar el usuario, False en caso contrario"""
+        """Este método se encarga de autenticas y validar la informacion de los usuarios que estan entrando a la aplicación"""
         print("\n%% AUTENTICAR USUARIO %%\n")
         id=int(input("Introduce el id del usuario: "))
         contraseña=input("Introduce la contraseña del usuario: ")
 
         for j in range(self.n_usuarios):
             if self.usuarios[j].id==id:
-                if self.usuarios[j].contraseña==contraseña:
+                if self.usuarios[j].contrasena==contraseña:
                     self.usuario_autenticado=self.usuarios[j]
                     return True
                 else:
@@ -196,25 +152,13 @@ class AppCine():
         if peliculas_activas_count == 0:
             print("No hay películas activas para mostrar.")
             return False
-    def consultar_ocupacion_pelicula_por_sala(self):
-        """Este método se encarga de mostrar la ocupación por sala """
-        
-    """def crear_programacion(self):
-        self.programaciones[self.n_programaciones]=Programacion()
-        print("\n%% Peliculas disponibles para añadir a la programacion %%")
-        numerador=0
-        for i in range(self.n_peliculas):
-            if self.peliculas[i].activa==1:
-                numerador+=1
-                print(f"{numerador}. Nombre: {self.peliculas[i].nombre_es}, ID: {self.peliculas[i].id}")
-        self.programaciones[self.n_programaciones].pedir_datos()"""
 
     def mostrar_menu_admin(self):
         """Este método muestra las opciones dentro del menú del administrador"""
         opcion=0
         while opcion!=15:
             print("\n%% MENÚ DE OPCIONES USUARIO ADMIN %%\n")
-            print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Programación\n6. Modificar Programación\n7. Eliminar Programación\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar ganancias de una sala\n14. Consultar ganancias de un complejo\n15. Consultar % de ocupación de una película\n16 Cerrar sesión")
+            print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar ganancias de una sala\n14. Consultar ganancias de un complejo\n15. Consultar % de ocupación de una película\n16. Cerrar sesión")
             opcion=int(input("Introduce la opción que deseas: "))
             match(opcion):
                 case 1:
@@ -225,12 +169,131 @@ class AppCine():
                     self.modificar_pelicula()
                 case 4:
                     self.eliminar_pelicula()
-                case 13:
-                    self.consultar_ocupacion_pelicula_por_sala()
+                case 5:
+                    self.annadir_pelicula_funcion()
+                case 6:
+                    self.mostrar_funciones()
+                case 7:
+                    self.eliminar_funcion_sala()
+                case 8:
+                    self.crear_sala()
 
                 case 16:
                     break
+    
+    def mostrar_menu_cliente(self):
+        opcion=0
+        while opcion!=6:
+            print("\n%% MENÚ DE OPCIONES CLIENTE %%\n")
+            print("1. Ver funcion de una sala\n2. Ver funcion de un complejo\n3. Ver programacion de una pelicula\n4. Ver mapa de una sala\n5. Reservar boleta\n6. Salir")
+            opcion=int(input("Introduce la opcion que deseas: "))
+            match(opcion):
+                case 6:
+                    break
 
+    def mostrar_menu_vendedor(self):
+        opcion=0
+        while opcion!=3:
+            print("\n%% MENÚ DE OPCIONES VENDEDOR %%\n")
+            print("1. Confirmar reserva\n2. Crear cliente\n3. Salir")
+            opcion=int(input("Introduce la opcion que deseas: "))
+            match(opcion):
+                case 3:
+                    break
+
+    def buscar_pelicula(self, id):
+        for i in range(self.n_peliculas):
+            if self.peliculas[i].id==id:
+                return i
+        return -1
+
+    def buscar_sala(self, id):
+        for i in range(self.n_salas):
+            if self.salas[i].id==id:
+                return i
+        return -1 
+
+    def mostrar_salas_disponibles(self):
+        print("\n%% SALAS DISPONIBLES %%\n")
+        contador=1
+        for i in range(self.n_salas):
+            print("SALA #",contador, " - ID: ", self.salas[i].id)
+            contador+=1
+
+
+    def annadir_pelicula_funcion(self):
+        self.mostrar_salas_disponibles()
+        id_sala=int(input("Introduce el id de la sala que deseas: "))
+        busqueda_sala=self.buscar_sala(id_sala)
+        if busqueda_sala!=-1:
+            self.mostrar_peliculas_activas()
+            id_pelicula=int(input("Introduce el id de la pelicula que quieres agregar: "))
+            busqueda_pelicula=self.buscar_pelicula(id_pelicula)
+            if busqueda_pelicula!=-1:
+                funcion=Funcion()
+                funcion.pedir_datos()
+                funcion.pelicula=self.peliculas[busqueda_pelicula]
+                funcion.hora_fin=funcion.hora_inicio + timedelta(minutes=funcion.pelicula.duracion)
+                if self.verificar_funcion(funcion, self.salas[busqueda_sala]):
+                    self.salas[busqueda_sala].set_funcion_programacion(funcion)
+                else:
+                    print(f"¡¡Error!! Traslape con '{self.peliculas[busqueda_pelicula].nombre_es}' en sala {self.salas[busqueda_sala].id}.")
+            else:
+                print("Pelicula no encontrada.")
+        else:
+            print("Sala no encontrada")
+
+
+    def verificar_funcion(self, funcion, sala):
+        for i in range(sala.n_funciones):
+            if sala.programacion[i].fecha==funcion.fecha and sala.programacion[i].hora_inicio==funcion.hora_inicio:
+#                if (funcion.hora_fin <= funcion.hora_inicio or funcion.hora_inicio >= funcion.hora_fin):
+                return False
+        return True
+
+
+    def mostrar_funciones(self):
+        if self.n_salas == 0:
+            print("No hay funciones programadas.")
+            return
+
+        for i in range(self.n_salas):
+            for j in range(self.salas[i].n_funciones):
+                print(f"Sala {self.salas[i].id} -- {self.salas[i].programacion[j].pelicula.nombre_es}: {self.salas[i].programacion[j].hora_inicio} - {self.salas[i].programacion[j].hora_fin}")
+   
+
+    def mostrar_funcion_sala(self):
+        self.mostrar_salas_disponibles()
+        op=int(input("Introduce el id de la sala que quieres ver: "))    
+        b=self.buscar_sala(op)
+        if b!=-1:
+            for i in range(self.salas[b].n_funciones):
+                print(self.salas[b].programacion[i].pelicula.nombre_es)
+
+
+    def eliminar_funcion_sala(self):
+        self.mostrar_salas_disponibles()
+        op=int(input("Introduce el id de la sala que quieres ver: "))    
+        b=self.buscar_sala(op)
+        if b!=-1:
+            for i in range(self.salas[b].n_funciones):
+                print("Nombre: ",self.salas[b].programacion[i].pelicula.nombre_es, " - ID: ", self.salas[b].programacion[i].pelicula.id)
+        op_e=int(input("Introduce el id de la pelicula que deseas eliminar: "))
+        p=self.salas[b].buscar_funcion(op_e)
+        if p!=-1:
+            for _ in range(self.salas[b].n_funciones-1):
+                self.salas[b].programacion[p]=self.salas[b].programacion[p+1]
+                self.salas[b].programacion[self.salas[b].n_funciones]=None
+                self.salas[b].n_funciones-=1
+            print("Se elimino correctamente")
+            return True
+        return False
+
+    def crear_sala(self):
+        nueva_sala=Sala()
+        nueva_sala.pedir_datos()
+        self.salas[self.n_salas]=nueva_sala
+        self.n_salas+=1
 
     def procesar(self):
         op=0
@@ -246,8 +309,13 @@ class AppCine():
                     if self.autenticar_usuario():
                         if self.usuario_autenticado.tipo==Usuario.PERFIL_ADMIN:
                             self.mostrar_menu_admin()
-
+                        elif self.usuario_autenticado.tipo==Usuario.PERFIL_CLIENTE:
+                            self.mostrar_menu_cliente()
+                        elif self.usuario_autenticado.tipo==Usuario.PERFIL_VENDEDOR:
+                            self.mostrar_menu_vendedor()
                 case 3:
                     self.usuario_autenticado=None
                     print("Aplicación terminada")
 
+app=AppCine()
+app.procesar()
