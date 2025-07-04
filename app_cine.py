@@ -2,6 +2,8 @@ import usuario as Usuario
 import programacion as programacion
 import pelicula as Pelicula
 import numpy as np
+import complejo_salas as complejo_salas
+import copy
 class AppCine():
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
     ATRIBUTOS:
@@ -194,7 +196,9 @@ class AppCine():
         if peliculas_activas_count == 0:
             print("No hay películas activas para mostrar.")
             return False
-
+    def consultar_ocupacion_pelicula_por_sala(self):
+        """Este método se encarga de mostrar la ocupación por sala """
+        
     """def crear_programacion(self):
         self.programaciones[self.n_programaciones]=Programacion()
         print("\n%% Peliculas disponibles para añadir a la programacion %%")
@@ -221,6 +225,8 @@ class AppCine():
                     self.modificar_pelicula()
                 case 4:
                     self.eliminar_pelicula()
+                case 13:
+                    self.consultar_ocupacion_pelicula_por_sala()
 
                 case 16:
                     break
