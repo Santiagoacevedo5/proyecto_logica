@@ -178,10 +178,75 @@ class AppCine():
                     self.eliminar_funcion_sala()
                 case 8:
                     self.crear_sala()
+                case 9:
+                    self.consultar_programacion_complejo()
 
                 case 16:
                     break
+
+    def consultar_programacion_complejo(self):
+        """Este método se encarga de consultar la programación de un complejo"""
+        for i in range(self.n_salas):
+            print(f"Sala {self.salas[i].id}:")
+            for j in range(self.salas[i].n_funciones):
+                funcion = self.salas[i].programacion[j]
+                print(f"  - {funcion.pelicula.nombre_es} ({funcion.fecha}) - {funcion.hora_inicio} a {funcion.hora_fin}")    
     
+    def consultar_programacion_pelicula(self):
+        """Este método se encarga de consultar la programación de una película en todas las salas"""
+        self.mostrar_peliculas_activas()
+        id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
+        for i in range(self.n_salas):
+            for j in range(self.salas[i].n_funciones):
+                if self.salas[i].programacion[j].pelicula.id==id_pelicula:
+                    funcion = self.salas[i].programacion[j]
+                    print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha} - {funcion.hora_inicio} a {funcion.hora_fin}")
+    
+    def modificar_programacion_sala(self):
+        """Este método se encarga de modificar la programación de una sala"""
+        self.mostrar_salas_disponibles()
+        id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
+        busqueda_sala=self.buscar_sala(id_sala)
+        if busqueda_sala!=-1:
+            self.salas[busqueda_sala].mostrar_funciones()
+            id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
+            funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
+            if funcion!=-1:
+                nueva_funcion=Funcion()
+                nueva_funcion.pedir_datos()
+                self.salas[busqueda_sala].programacion[funcion]=nueva_funcion
+                print("Función modificada correctamente.")
+            else:
+                print("Función no encontrada.")
+        else:
+            print("Sala no encontrada.")
+    
+    def consultar_ganancias_sala_o_complejo(self):
+        """Este método se encarga de consultar las ganancias de una sala o complejo"""
+        print("1. Consultar ganancias de una sala\n2. Consultar ganancias de un complejo")
+        opcion=int(input("Selecciona una opción: "))
+        if opcion==1:
+            self.mostrar_salas_disponibles()
+            id_sala=int(input("Introduce el id de la sala que deseas consultar: "))
+            busqueda_sala=self.buscar_sala(id_sala)
+            if busqueda_sala!=-1:
+                total_ganancias = 0
+                for funcion in self.salas[busqueda_sala].programacion:
+                    if funcion is not None:
+                        total_ganancias += 0 * self.salas[busqueda_sala].valor_boleta
+                print(f"Ganancias de la sala {self.salas[busqueda_sala].id}: ${total_ganancias}")
+            else:
+                print("Sala no encontrada.")
+        elif opcion==2:
+            total_ganancias = 0
+            for sala in self.salas:
+                if sala is not None:
+                    for funcion in sala.programacion:
+                        if funcion is not None:
+                            total_ganancias += 0* sala.valor_boleta
+            print(f"Ganancias del complejo: ${total_ganancias}")
+        else:
+            print("Opción no válida.")
     def mostrar_menu_cliente(self):
         opcion=0
         while opcion!=6:
@@ -235,6 +300,7 @@ class AppCine():
                 funcion.pedir_datos()
                 funcion.pelicula=self.peliculas[busqueda_pelicula]
                 funcion.hora_fin=funcion.hora_inicio + timedelta(minutes=funcion.pelicula.duracion)
+                funcion.matriz_asientos=np.full((self.salas[busqueda_sala].filas, self.salas[busqueda_sala].sillas_fila), fill_value=0, dtype=int)
                 if self.verificar_funcion(funcion, self.salas[busqueda_sala]):
                     self.salas[busqueda_sala].set_funcion_programacion(funcion)
                 else:
