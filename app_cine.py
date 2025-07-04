@@ -3,6 +3,7 @@ from funcion import Funcion
 from pelicula import Pelicula
 import numpy as np
 from sala import Sala
+from complejo_salas import Complejo_Salas
 from programacion import Programacion
 from datetime import timedelta
 
@@ -243,6 +244,14 @@ class AppCine():
         else:
             print("Sala no encontrada")
 
+    def reservar_boleta(self):
+        self.mostrar_funciones()
+        id_funcion = int(input("Introduce el id de la función que deseas reservar: "))
+        for sala in Complejo_Salas.lista_salas:
+            for funcion in sala.programacion:
+                print("La película esta en la(s) sala(s): ")
+                if funcion.pelicula.id == id_funcion:
+                    print("Sala ID:", sala.id) 
 
     def verificar_funcion(self, funcion, sala):
         for i in range(sala.n_funciones):
