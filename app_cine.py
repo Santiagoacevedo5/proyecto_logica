@@ -5,7 +5,7 @@ import numpy as np
 from sala import Sala
 from complejo_salas import Complejo_Salas
 from programacion import Programacion
-from datetime import timedelta
+from datetime import date, timedelta
 
 class AppCine():
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
@@ -254,6 +254,8 @@ class AppCine():
             print("1. Ver funcion de una sala\n2. Ver funcion de un complejo\n3. Ver programacion de una pelicula\n4. Ver mapa de una sala\n5. Reservar boleta\n6. Salir")
             opcion=int(input("Introduce la opcion que deseas: "))
             match(opcion):
+                case 5:
+                    self.reservar_boleta()
                 case 6:
                     break
 
@@ -311,13 +313,38 @@ class AppCine():
             print("Sala no encontrada")
 
     def reservar_boleta(self):
-        self.mostrar_funciones()
-        id_funcion = int(input("Introduce el id de la función que deseas reservar: "))
-        for sala in Complejo_Salas.lista_salas:
-            for funcion in sala.programacion:
-                print("La película esta en la(s) sala(s): ")
-                if funcion.pelicula.id == id_funcion:
-                    print("Sala ID:", sala.id) 
+        self.consultar_programacion_pelicula()
+        id_sala=int(input("Introduce el id de la sala que deseas: "))
+        id_pelicula=int(input("Introduce el id de la pelicula que deseas: "))
+        for sala in self.salas:
+            if sala.id==id_sala:
+                for funcion in sala.programacion:
+                    if funcion.pelicula.id==id_pelicula:
+                        print(sala.matriz_asientos)
+                        fila=int(input("Introduce la fila que deseas reservar: "))
+                        
+                        q= True
+                        lista_asientos_reservados = []
+                        cantidad_asientos=0
+                        while q:
+                            silla=int(input("Introduce el número de silla que deseas reservar: "))
+                            if sala.matriz_asientos[fila][silla]==0:
+                                sala.matriz_asientos[fila][silla]=1
+                                print("Boleta reservada con éxito.")
+                                lista_asientos_reservados.append((fila, silla))
+                                cantidad_asientos += 1
+                            else:
+                                print("La boleta ya está reservada.")
+                            n= input("¿Deseas reservar otra boleta? 1.Si 2.No: ")
+                            if n=="2":
+                                q=False
+                            return lista_asientos_reservados
+                        print(f" **** BOLETA ***** \n Sala: {sala.id}\n Película {funcion.pelicula.nombre_es} \n Día {date.today()}  \n Asientos: {lista_asientos_reservados} \n Total: {cantidad_asientos*sala.valor_boleta} \n **** FIN BOLETA *****")
+
+                            
+
+
+        
 
     def verificar_funcion(self, funcion, sala):
         for i in range(sala.n_funciones):
