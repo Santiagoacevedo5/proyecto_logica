@@ -158,7 +158,7 @@ class AppCine():
         opcion=0
         while opcion!=15:
             print("\n%% MENÚ DE OPCIONES USUARIO ADMIN %%\n")
-            print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar ganancias de una sala\n14. Consultar ganancias de un complejo\n15. Consultar % de ocupación de una película\n16. Cerrar sesión")
+            print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar ganancias de una sala\n14. Consultar ganancias de un complejo\n15. Consultar % de ocupación de una película\n16. Consultar programación del complejo completo \n17. Consultar programación de una película \n18. Modificar programación de una sala\n19. Consultar ganancias de una sala o complejo\n20. Salir")
             opcion=int(input("Introduce la opción que deseas: "))
             match(opcion):
                 case 1:
@@ -177,12 +177,16 @@ class AppCine():
                     self.eliminar_funcion_sala()
                 case 8:
                     self.crear_sala()
-                case 9:
-                    self.consultar_programacion_complejo()
-
                 case 16:
+                    self.consultar_programacion_complejo()
+                case 17:
+                    self.consultar_programacion_pelicula()
+                case 18:
+                    self.modificar_programacion_sala()
+                case 19:
+                    self.consultar_ganancias_sala_o_complejo()
+                case 20:
                     break
-
     def consultar_programacion_complejo(self):
         """Este método se encarga de consultar la programación de un complejo"""
         for i in range(self.n_salas):
@@ -207,7 +211,7 @@ class AppCine():
         id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
         busqueda_sala=self.buscar_sala(id_sala)
         if busqueda_sala!=-1:
-            self.salas[busqueda_sala].mostrar_funciones()
+            self.salas[busqueda_sala].buscar_funcion()
             id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
             funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
             if funcion!=-1:
