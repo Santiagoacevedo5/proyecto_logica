@@ -341,6 +341,7 @@ class AppCine():
                                     funcion.matriz_asientos[fila][silla] = 1
                                     lista_asientos_reservados.append((fila, silla))
                                     cantidad_asientos += 1
+                                    self.salas[sala.id].boletas_vendidas += 1
                                     print("Boleta reservada con éxito.")
                                 else:
                                     print("La boleta ya está reservada.")
