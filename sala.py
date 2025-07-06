@@ -17,6 +17,7 @@ class Sala():
     valor_boleta=float
     filas=int
     sillas_fila=int
+    boletas_vendidas=0
 
     MAX_PELICULAS=5
 
@@ -26,6 +27,7 @@ class Sala():
         self.valor_boleta=0
         self.filas=0
         self.sillas_fila=0
+        self.boletas_vendidas=0
         self.programacion=np.full((self.MAX_PELICULAS), fill_value=None, dtype=object)
 
     def pedir_datos(self):
