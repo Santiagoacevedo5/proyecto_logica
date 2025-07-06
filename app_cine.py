@@ -6,6 +6,7 @@ from sala import Sala
 from complejo_salas import Complejo_Salas
 from programacion import Programacion
 from datetime import date, timedelta
+import pickle
 
 class AppCine():
     """Esta clase representa la plantilla principal del programa en donde se ejecuta la aplicación
@@ -63,6 +64,7 @@ class AppCine():
                 usuario.pedir_datos
         self.usuarios[self.n_usuarios]=usuario
         self.n_usuarios+=1
+        self.guardar_datos()
 
     def autenticar_usuario(self):
         """Este método se encarga de autenticas y validar la informacion de los usuarios que estan entrando a la aplicación"""
@@ -88,6 +90,7 @@ class AppCine():
         self.peliculas[self.n_peliculas]=nueva_pelicula
         print("PELICULA CREADA CON EXITO!!!!")
         self.n_peliculas+=1
+        self.guardar_datos()
 
     def modificar_pelicula(self):
         """Este método se encarga de modificar el estado de una película a activa/inactiva según corresponda"""
@@ -104,8 +107,8 @@ class AppCine():
                     self.peliculas[i].activa=int(input("Introduce la opción: "))
                     return
         print("Película no encontrada")
+        self.guardar_datos()
         return
-
     def mostrar_total_peliculas(self):
         for i in range(self.n_peliculas):
             print(f"{i+1}. Nombre: {self.peliculas[i].nombre_es}.   ID: {self.peliculas[i].id}")
@@ -125,6 +128,7 @@ class AppCine():
                 self.peliculas[i-1]=self.peliculas[i]
             #self.peliculas[i]=None
             self.n_peliculas-=1
+            self.guardar_datos()
             return True
         else:
             return False
@@ -314,32 +318,46 @@ class AppCine():
 
     def reservar_boleta(self):
         self.consultar_programacion_pelicula()
-        id_sala=int(input("Introduce el id de la sala que deseas: "))
-        id_pelicula=int(input("Introduce el id de la pelicula que deseas: "))
+
+        id_sala = int(input("Introduce el id de la sala que deseas: "))
+        id_pelicula = int(input("Introduce el id de la película que deseas: "))
+
         for sala in self.salas:
-            if sala.id==id_sala:
+            if sala.id == id_sala:
                 for funcion in sala.programacion:
-                    if funcion.pelicula.id==id_pelicula:
-                        print(sala.matriz_asientos)
-                        fila=int(input("Introduce la fila que deseas reservar: "))
-                        
-                        q= True
+                    if funcion.pelicula.id == id_pelicula:
+                        # Mostrar asientos disponibles (1 = disponible, 0 = ocupado)
+                        print("Asientos disponibles (1 = libre, 0 = reservado):")
+                        print(funcion.matriz_asientos)
+
+                        fila = int(input("Introduce la fila que deseas reservar: "))
                         lista_asientos_reservados = []
-                        cantidad_asientos=0
-                        while q:
-                            silla=int(input("Introduce el número de silla que deseas reservar: "))
-                            if sala.matriz_asientos[fila][silla]==0:
-                                sala.matriz_asientos[fila][silla]=1
-                                print("Boleta reservada con éxito.")
-                                lista_asientos_reservados.append((fila, silla))
-                                cantidad_asientos += 1
+                        cantidad_asientos = 0
+
+                        while True:
+                            silla = int(input("Introduce el número de silla que deseas reservar: "))
+                            if 1 <= fila < funcion.matriz_asientos.shape[0] and 1 <= silla < funcion.matriz_asientos.shape[1]:
+                                if funcion.matriz_asientos[fila][silla] == 0:
+                                    funcion.matriz_asientos[fila][silla] = 1
+                                    lista_asientos_reservados.append((fila, silla))
+                                    cantidad_asientos += 1
+                                    print("Boleta reservada con éxito.")
+                                else:
+                                    print("La boleta ya está reservada.")
                             else:
-                                print("La boleta ya está reservada.")
-                            n= input("¿Deseas reservar otra boleta? 1.Si 2.No: ")
-                            if n=="2":
-                                q=False
-                            return lista_asientos_reservados
-                        print(f" **** BOLETA ***** \n Sala: {sala.id}\n Película {funcion.pelicula.nombre_es} \n Día {date.today()}  \n Asientos: {lista_asientos_reservados} \n Total: {cantidad_asientos*sala.valor_boleta} \n **** FIN BOLETA *****")
+                                print("Fila o silla fuera de rango.")
+
+                            n = input("¿Deseas reservar otra boleta? (1.Sí / 2.No): ")
+                            if n != "1":
+                                break
+
+                    
+                        self.guardar_datos()
+
+                        print(f"**** BOLETA *****Sala: {sala.id}Película: {funcion.pelicula.nombre_es}Fecha: {date.today()}Asientos reservados: {lista_asientos_reservados}Total: ${cantidad_asientos * sala.valor_boleta}**** FIN BOLETA *****")
+                    return  # Salimos después de reservar
+        print("No se encontró la sala o película indicada.")
+
 
                             
 
@@ -396,6 +414,7 @@ class AppCine():
         nueva_sala.pedir_datos()
         self.salas[self.n_salas]=nueva_sala
         self.n_salas+=1
+        self.guardar_datos()
 
     def procesar(self):
         op=0
@@ -418,6 +437,48 @@ class AppCine():
                 case 3:
                     self.usuario_autenticado=None
                     print("Aplicación terminada")
+    def guardar_datos(self):
+        """Guarda usuarios, salas y películas en archivos pickle"""
+        with open("usuarios.pkl", "wb") as f:
+            pickle.dump(self.usuarios[:self.n_usuarios], f)
+        with open("salas.pkl", "wb") as f:
+            pickle.dump(self.salas[:self.n_salas], f)
+        with open("peliculas.pkl", "wb") as f:
+            pickle.dump(self.peliculas[:self.n_peliculas], f)
 
-app=AppCine()
-app.procesar()
+    def cargar_datos(self):
+        """Carga usuarios, salas y películas desde archivos pickle si existen"""
+        import os
+        if os.path.exists("usuarios.pkl"):
+            with open("usuarios.pkl", "rb") as f:
+                usuarios_cargados = pickle.load(f)
+                for i, usuario in enumerate(usuarios_cargados):
+                    self.usuarios[i] = usuario
+                self.n_usuarios = len(usuarios_cargados)
+
+        if os.path.exists("salas.pkl"):
+            with open("salas.pkl", "rb") as f:
+                salas_cargadas = pickle.load(f)
+                for i, sala in enumerate(salas_cargadas):
+                    self.salas[i] = sala
+                self.n_salas = len(salas_cargadas)
+
+        if os.path.exists("peliculas.pkl"):
+            with open("peliculas.pkl", "rb") as f:
+                peliculas_cargadas = pickle.load(f)
+                for i, pelicula in enumerate(peliculas_cargadas):
+                    self.peliculas[i] = pelicula
+                self.n_peliculas = len(peliculas_cargadas)
+
+
+#app=AppCine()
+#app.cargar_datos()
+#app.procesar()
+def main():
+    app = AppCine()
+    app.cargar_datos()
+    app.procesar()
+    # al salir:
+    app.guardar_datos()
+if __name__ == "__main__":
+    main()
