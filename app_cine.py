@@ -330,12 +330,12 @@ class AppCine():
                         print("Asientos disponibles (1 = libre, 0 = reservado):")
                         print(funcion.matriz_asientos)
 
-                        fila = int(input("Introduce la fila que deseas reservar: "))
+                        fila = int(input("Introduce la fila que deseas reservar: "))-1
                         lista_asientos_reservados = []
                         cantidad_asientos = 0
 
                         while True:
-                            silla = int(input("Introduce el número de silla que deseas reservar: "))
+                            silla = int(input("Introduce el número de silla que deseas reservar: "))-1
                             if 1 <= fila < funcion.matriz_asientos.shape[0] and 1 <= silla < funcion.matriz_asientos.shape[1]:
                                 if funcion.matriz_asientos[fila][silla] == 0:
                                     funcion.matriz_asientos[fila][silla] = 1
@@ -354,7 +354,7 @@ class AppCine():
                     
                         self.guardar_datos()
 
-                        print(f"**** BOLETA *****Sala: {sala.id}Película: {funcion.pelicula.nombre_es}Fecha: {date.today()}Asientos reservados: {lista_asientos_reservados}Total: ${cantidad_asientos * sala.valor_boleta}**** FIN BOLETA *****")
+                    print(f"**** BOLETA *****\nSala: {sala.id}\nPelícula: {funcion.pelicula.nombre_es}\nFecha: {date.today()}\nAsientos reservados: {lista_asientos_reservados}\nTotal: ${cantidad_asientos * sala.valor_boleta}**** FIN BOLETA *****")
                     return  # Salimos después de reservar
         print("No se encontró la sala o película indicada.")
 
