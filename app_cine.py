@@ -203,58 +203,70 @@ class AppCine():
     def consultar_programacion_pelicula(self):
         """Este método se encarga de consultar la programación de una película en todas las salas"""
         self.mostrar_peliculas_activas()
-        id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
-        for i in range(self.n_salas):
-            for j in range(self.salas[i].n_funciones):
-                if self.salas[i].programacion[j].pelicula.id==id_pelicula:
-                    funcion = self.salas[i].programacion[j]
-                    print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha} - {funcion.hora_inicio} a {funcion.hora_fin}")
+        try:
+            id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
+            for i in range(self.n_salas):
+                for j in range(self.salas[i].n_funciones):
+                    if self.salas[i].programacion[j].pelicula.id==id_pelicula:
+                        funcion = self.salas[i].programacion[j]
+                        print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha} - {funcion.hora_inicio} a {funcion.hora_fin}")
+        except ValueError:
+            print("ID de película inválido. Por favor, introduce un número entero: ")                    
     
     def modificar_programacion_sala(self):
         """Este método se encarga de modificar la programación de una sala"""
         self.mostrar_salas_disponibles()
-        id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
-        busqueda_sala=self.buscar_sala(id_sala)
-        if busqueda_sala!=-1:
-            self.salas[busqueda_sala].buscar_funcion()
-            id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
-            funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
-            if funcion!=-1:
-                nueva_funcion=Funcion()
-                nueva_funcion.pedir_datos()
-                self.salas[busqueda_sala].programacion[funcion]=nueva_funcion
-                print("Función modificada correctamente.")
+        try:
+            id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
+            busqueda_sala=self.buscar_sala(id_sala)
+            if busqueda_sala!=-1:
+                self.salas[busqueda_sala].buscar_funcion()
+                try:
+                    id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
+                    funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
+                    if funcion!=-1:
+                        nueva_funcion=Funcion()
+                        nueva_funcion.pedir_datos()
+                        self.salas[busqueda_sala].programacion[funcion]=nueva_funcion
+                        print("Función modificada correctamente.")
+                    else:
+                        print("Función no encontrada.")
+                except ValueError:
+                    print("ID de función inválido. Por favor, introduce un número entero: ")
             else:
-                print("Función no encontrada.")
-        else:
-            print("Sala no encontrada.")
+                print("Sala no encontrada.")
+        except ValueError:
+            print("ID de sala inválido. Por favor, introduce un número entero: ")
     
     def consultar_ganancias_sala_o_complejo(self):
         """Este método se encarga de consultar las ganancias de una sala o complejo"""
         print("1. Consultar ganancias de una sala\n2. Consultar ganancias de un complejo")
-        opcion=int(input("Selecciona una opción: "))
-        if opcion==1:
-            self.mostrar_salas_disponibles()
-            id_sala=int(input("Introduce el id de la sala que deseas consultar: "))
-            busqueda_sala=self.buscar_sala(id_sala)
-            if busqueda_sala!=-1:
-                total_ganancias = 0
-                for funcion in self.salas[busqueda_sala].programacion:
-                    if funcion is not None:
-                        total_ganancias += self.salas.boletas_vendidas * self.salas[busqueda_sala].valor_boleta
-                print(f"Ganancias de la sala {self.salas[busqueda_sala].id}: ${total_ganancias}")
-            else:
-                print("Sala no encontrada.")
-        elif opcion==2:
-            total_ganancias = 0
-            for sala in self.salas:
-                if sala is not None:
-                    for funcion in sala.programacion:
+        try:
+            opcion=int(input("Selecciona una opción: "))
+            if opcion==1:
+                self.mostrar_salas_disponibles()
+                id_sala=int(input("Introduce el id de la sala que deseas consultar: "))
+                busqueda_sala=self.buscar_sala(id_sala)
+                if busqueda_sala!=-1:
+                    total_ganancias = 0
+                    for funcion in self.salas[busqueda_sala].programacion:
                         if funcion is not None:
-                            total_ganancias += self.salas.boletas_vendidas* sala.valor_boleta
-            print(f"Ganancias del complejo: ${total_ganancias}")
-        else:
-            print("Opción no válida.")
+                            total_ganancias += self.salas.boletas_vendidas * self.salas[busqueda_sala].valor_boleta
+                    print(f"Ganancias de la sala {self.salas[busqueda_sala].id}: ${total_ganancias}")
+                else:
+                    print("Sala no encontrada.")
+            elif opcion==2:
+                total_ganancias = 0
+                for sala in self.salas:
+                    if sala is not None:
+                        for funcion in sala.programacion:
+                            if funcion is not None:
+                                total_ganancias += self.salas.boletas_vendidas* sala.valor_boleta
+                print(f"Ganancias del complejo: ${total_ganancias}")
+            else:
+                print("Opción no válida.")
+        except ValueError:
+            print("Entrada inválida. Por favor, introduce un número entero: ")
     def mostrar_menu_cliente(self):
         opcion=0
         while opcion!=6:
@@ -262,6 +274,10 @@ class AppCine():
             print("1. Ver funcion de una sala\n2. Ver funcion de un complejo\n3. Ver programacion de una pelicula\n4. Ver mapa de una sala\n5. Reservar boleta\n6. Salir")
             opcion=int(input("Introduce la opcion que deseas: "))
             match(opcion):
+                case 2:
+                    self.consultar_programacion_complejo()
+                case 3:
+                    self.consultar_programacion_pelicula()
                 case 5:
                     self.reservar_boleta()
                 case 6:
