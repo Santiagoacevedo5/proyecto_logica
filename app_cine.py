@@ -163,7 +163,7 @@ class AppCine():
         opcion=0
         while opcion!=15:
             print("\n%% MENÚ DE OPCIONES USUARIO ADMIN %%\n")
-            print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar ganancias de una sala\n14. Consultar ganancias de un complejo\n15. Consultar % de ocupación de una película\n16. Consultar programación del complejo completo \n17. Consultar programación de una película \n18. Modificar programación de una sala\n19. Consultar ganancias de una sala o complejo\n20. Salir")
+            print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar % de ocupación de una película\n14. Consultar programación del complejo completo \n15. Consultar programación de una película \n16. Modificar programación de una sala\n17. Consultar ganancias de una sala o complejo\n18. Salir")
             opcion=int(input("Introduce la opción que deseas: "))
             match(opcion):
                 case 1:
