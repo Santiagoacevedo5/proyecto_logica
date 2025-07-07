@@ -2,7 +2,7 @@ from pelicula import Pelicula
 import numpy as np
 import datetime
 from datetime import timedelta, date, time
-
+a
 
 class Funcion():
 
