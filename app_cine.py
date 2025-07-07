@@ -182,6 +182,8 @@ class AppCine():
                     self.eliminar_funcion_sala()
                 case 8:
                     self.crear_sala()
+                case 15:
+                    self.consultar_ocupacion_pelicula()
                 case 16:
                     self.consultar_programacion_complejo()
                 case 17:
@@ -212,7 +214,20 @@ class AppCine():
                         print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha} - {funcion.hora_inicio} a {funcion.hora_fin}")
         except ValueError:
             print("ID de película inválido. Por favor, introduce un número entero: ")                    
-    
+    def consultar_ocupacion_pelicula(self):
+        """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
+        self.mostrar_peliculas_activas()
+        try:
+            id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
+            for i in range(self.n_salas):
+                for j in range(self.salas[i].n_funciones):
+                    if self.salas[i].programacion[j].pelicula.id==id_pelicula:
+                        funcion = self.salas[i].programacion[j]
+                        ocupacion = (self.salas[i].boletas_vendidas / (self.salas[i].filas*self.salas[i].sillas_fila)) * 100
+                        print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {ocupacion}% de ocupación")
+        except ValueError:
+            print("ID de película inválido. Por favor, introduce un número entero: ")
+
     def modificar_programacion_sala(self):
         """Este método se encarga de modificar la programación de una sala"""
         self.mostrar_salas_disponibles()
@@ -220,7 +235,7 @@ class AppCine():
             id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
             busqueda_sala=self.buscar_sala(id_sala)
             if busqueda_sala!=-1:
-                self.salas[busqueda_sala].buscar_funcion()
+                self.salas[busqueda_sala].buscar_funcion(id_sala)
                 try:
                     id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
                     funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
