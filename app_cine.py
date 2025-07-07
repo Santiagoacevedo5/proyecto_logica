@@ -326,8 +326,8 @@ class AppCine():
             if sala.id == id_sala:
                 for funcion in sala.programacion:
                     if funcion.pelicula.id == id_pelicula:
-                        # Mostrar asientos disponibles (1 = disponible, 0 = ocupado)
-                        print("Asientos disponibles (1 = libre, 0 = reservado):")
+                        # Mostrar asientos disponibles (0 = libre, 1 = reservado)
+                        print("Asientos disponibles (0 = libre, 1 = reservado):")
                         print(funcion.matriz_asientos)
 
                         fila = int(input("Introduce la fila que deseas reservar: "))-1
