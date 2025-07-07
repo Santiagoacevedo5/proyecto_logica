@@ -261,7 +261,7 @@ class AppCine():
                     if sala is not None:
                         for funcion in sala.programacion:
                             if funcion is not None:
-                                total_ganancias += self.salas[busqueda_sala].boletas_vendidas * sala.valor_boleta
+                                total_ganancias += sala.boletas_vendidas * sala.valor_boleta
                 print(f"Ganancias del complejo: ${total_ganancias}")
             else:
                 print("Opción no válida.")
