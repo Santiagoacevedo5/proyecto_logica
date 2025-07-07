@@ -2,7 +2,7 @@ from pelicula import Pelicula
 import numpy as np
 import datetime
 from datetime import timedelta, date, time
-a
+
 
 class Funcion():
 
@@ -18,6 +18,11 @@ class Funcion():
         self.matriz_asientos=None
 
     def pedir_datos(self):
-        self.pelicula=input("Introduce el id de la película que quieres agregar a la función: ")
-        self.fecha=datetime.datetime.strptime((input("Introduce la fecha de la función en formato DD-MM-YYYY: ")), "%d-%m-%Y")
-        self.hora_inicio=datetime.datetime.strptime((input("Introduce la hora de inicio de la película en formato HH:MM: ")), "%H:%M")
+        while True:
+            try:
+                self.pelicula=input("Introduce el id de la película que quieres agregar a la función: ")
+                self.fecha=datetime.datetime.strptime((input("Introduce la fecha de la función en formato DD-MM-YYYY: ")), "%d-%m-%Y")
+                self.hora_inicio=datetime.datetime.strptime((input("Introduce la hora de inicio de la película en formato HH:MM: ")), "%H:%M")
+                break
+            except:
+                print("Ingresa un dato válido.")

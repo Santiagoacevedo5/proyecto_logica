@@ -34,10 +34,15 @@ class Usuario():
 
     def pedir_datos(self):
         """Este método se encarga de pedir los datos por consola y asignarlos a cada uno de los atributos correspondientes"""
-        self.nombre=input("Introduce tu nombre: ")
-        self.id=int(input("Introduce tu id: "))
-        self.email=input("Introduce tu email: ")
-        self.contrasena=input("Introduce la contraseña del usuario: ")
+        while True:
+            try:
+                self.id=int(input("Introduce tu id: "))
+                self.nombre=input("Introduce tu nombre: ")
+                self.email=input("Introduce tu email: ")
+                self.contrasena=input("Introduce la contraseña del usuario: ")
+                break
+            except:
+                print("Ingresa un dato válido.")
 
     def cambiar_tipo(self, tipo):
         """Este método se encarga de asignar el tipo de usuario. Por defecto es de tipo PERFIL_CLIENTE"""

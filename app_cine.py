@@ -69,19 +69,52 @@ class AppCine():
     def autenticar_usuario(self):
         """Este método se encarga de autenticas y validar la informacion de los usuarios que estan entrando a la aplicación"""
         print("\n%% AUTENTICAR USUARIO %%\n")
-        id=int(input("Introduce el id del usuario: "))
-        contraseña=input("Introduce la contraseña del usuario: ")
+        try:
+            id=int(input("Introduce el id del usuario: "))
+            contraseña=input("Introduce la contraseña del usuario: ")
 
-        for j in range(self.n_usuarios):
-            if self.usuarios[j].id==id:
-                if self.usuarios[j].contrasena==contraseña:
-                    self.usuario_autenticado=self.usuarios[j]
-                    return True
-                else:
-                    print("La contraseña ingresada es incorrecta")
-                    return False
-        print("Usuario no registrado")
-        return False
+            for j in range(self.n_usuarios):
+                if self.usuarios[j].id==id:
+                    if self.usuarios[j].contrasena==contraseña:
+                        self.usuario_autenticado=self.usuarios[j]
+                        return True
+                    else:
+                        print("La contraseña ingresada es incorrecta")
+                        return False
+            print("Usuario no registrado")
+            return False
+        except:
+            print("Ingresa un dato válido.")
+    
+    def mostrar_clientes(self):
+        for i in range(self.n_usuarios):
+            if self.usuarios[i].tipo==1:
+                print("ID: ", self.usuarios[i].id, " - Nombre: ", self.usuarios[i].nombre)
+
+    def eliminar_usuario(self):
+        """Este método se encarga de eliminar usuarios."""
+        self.mostrar_clientes()
+        try:
+            id_cliente=int(input("Introduce el id del cliente que deseas eliminar: "))
+            us=self.buscar_usuario(id_cliente)
+            if us!=-1:
+                for _ in range(self.n_usuarios-1):
+                    self.usuarios[us]=self.usuarios[us+1]
+                self.usuarios[self.n_usuarios-1]=None
+                self.n_usuarios-=1
+                print("Usuario eliminado con éxito.")
+                return True
+            return False
+        except ValueError:
+            print("Introduce un valor numérico.")
+
+    def buscar_usuario(self, id):
+        for i in range(self.n_usuarios):
+            if self.usuarios[i].id==id:
+                return i
+        return -1 
+    
+        
 
     def crear_pelicula(self):
         """Este método se encarga de crear películas dentro del sistema"""
@@ -161,11 +194,11 @@ class AppCine():
     def mostrar_menu_admin(self):
         """Este método muestra las opciones dentro del menú del administrador"""
         opcion=0
-        while opcion!=18:
+        while opcion!=15:
             print("\n%% MENÚ DE OPCIONES USUARIO ADMIN %%\n")
             print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar % de ocupación de una película\n14. Consultar programación del complejo completo \n15. Consultar programación de una película \n16. Modificar programación de una sala\n17. Consultar ganancias de una sala o complejo\n18. Salir")
+            opcion=int(input("Introduce la opción que deseas: "))
             try:
-                opcion=int(input("Introduce la opción que deseas: "))
                 match(opcion):
                     case 1:
                         self.crear_pelicula()
@@ -183,6 +216,14 @@ class AppCine():
                         self.eliminar_funcion_sala()
                     case 8:
                         self.crear_sala()
+                    case 9:
+                        self.modificar_sala()
+                    case 10:
+                        self.eliminar_sala()
+                    case 11:
+                        self.registrar_usuario()
+                    case 12:
+                        self.eliminar_usuario()
                     case 13:
                         self.consultar_ocupacion_pelicula()
                     case 14:
@@ -194,11 +235,10 @@ class AppCine():
                     case 17:
                         self.consultar_ganancias_sala_o_complejo()
                     case 18:
-                        print("Saliendo del menú de administrador...")
+                        break
                     case _:
                         if opcion<1 or opcion>19:
                             print("Opción no válida. Por favor, introduce un número entre 1 y 19.")
-
             except ValueError:
                     print("Entrada inválida. Por favor, introduce un número entero: ")
     def consultar_programacion_complejo(self):
@@ -275,7 +315,44 @@ class AppCine():
                 print("Sala no encontrada.")
         except ValueError:
             print("ID de sala inválido. Por favor, introduce un número entero: ")
-    
+        
+    def modificar_sala(self):
+        """Este método se encarga de modificar una sala dada."""
+        self.mostrar_salas_disponibles()
+        try:
+            id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
+            sa=self.buscar_sala(id_sala)
+            if sa!=-1:
+                print("Valor actual de la boleta: ", self.salas[sa].valor_boleta)
+                try:
+                    valor_nuevo=float(input("Ingresa el nuevo valor de la boleta: "))
+                    self.salas[sa].valor_boleta=valor_nuevo
+                except:
+                    print("Ingresa un dato válido")
+            else:
+                print("Sala no encontrada")
+        except:
+            print("Ingresa un valor válido")
+
+    def eliminar_sala(self):
+        """Este método se encarga de eliminar una sala dada."""
+        self.mostrar_salas_disponibles()
+        try:
+            id_sala=int(input("Ingrese el id de la sala que deseas eliminar: "))
+            sa=self.buscar_sala(id_sala)
+            if sa!=-1:
+                for _ in range(self.n_salas-1):
+                    self.salas[sa]=self.salas[sa+1]
+                self.salas[self.n_salas-1]=None
+                self.n_salas-=1
+                print("Se eliminó la sala correctamente.")
+                return True
+            else:
+                print("Sala no encontrada.")
+                return False
+        except:
+            print("Ingrese un dato válido.")
+
     def consultar_ganancias_sala_o_complejo(self):
         """Este método se encarga de consultar las ganancias de una sala o complejo"""
         print("1. Consultar ganancias de una sala\n2. Consultar ganancias de un complejo")
@@ -306,6 +383,7 @@ class AppCine():
         except ValueError:
             print("Entrada inválida. Por favor, introduce un número entero: ")
     def mostrar_menu_cliente(self):
+        """Este método se encarga de mostrar el menú del cliente"""
         opcion=0
         while opcion!=6:
             print("\n%% MENÚ DE OPCIONES CLIENTE %%\n")
@@ -322,12 +400,15 @@ class AppCine():
                     break
 
     def mostrar_menu_vendedor(self):
+        """ESte método se encarga de mostrar el menú del vendedor."""
         opcion=0
         while opcion!=3:
             print("\n%% MENÚ DE OPCIONES VENDEDOR %%\n")
             print("1. Confirmar reserva\n2. Crear cliente\n3. Salir")
             opcion=int(input("Introduce la opcion que deseas: "))
             match(opcion):
+                case 2:
+                    self.registrar_usuario()
                 case 3:
                     break
 
@@ -353,26 +434,32 @@ class AppCine():
 
     def annadir_pelicula_funcion(self):
         self.mostrar_salas_disponibles()
-        id_sala=int(input("Introduce el id de la sala que deseas: "))
-        busqueda_sala=self.buscar_sala(id_sala)
-        if busqueda_sala!=-1:
-            self.mostrar_peliculas_activas()
-            id_pelicula=int(input("Introduce el id de la pelicula que quieres agregar: "))
-            busqueda_pelicula=self.buscar_pelicula(id_pelicula)
-            if busqueda_pelicula!=-1:
-                funcion=Funcion()
-                funcion.pedir_datos()
-                funcion.pelicula=self.peliculas[busqueda_pelicula]
-                funcion.hora_fin=funcion.hora_inicio + timedelta(minutes=funcion.pelicula.duracion)
-                funcion.matriz_asientos=np.full((self.salas[busqueda_sala].filas, self.salas[busqueda_sala].sillas_fila), fill_value=0, dtype=int)
-                if self.verificar_funcion(funcion, self.salas[busqueda_sala]):
-                    self.salas[busqueda_sala].set_funcion_programacion(funcion)
-                else:
-                    print(f"¡¡Error!! Traslape con '{self.peliculas[busqueda_pelicula].nombre_es}' en sala {self.salas[busqueda_sala].id}.")
+        try:
+            id_sala=int(input("Introduce el id de la sala que deseas: "))
+            busqueda_sala=self.buscar_sala(id_sala)
+            if busqueda_sala!=-1:
+                self.mostrar_peliculas_activas()
+                try:
+                    id_pelicula=int(input("Introduce el id de la pelicula que quieres agregar: "))
+                    busqueda_pelicula=self.buscar_pelicula(id_pelicula)
+                    if busqueda_pelicula!=-1:
+                        funcion=Funcion()
+                        funcion.pedir_datos()
+                        funcion.pelicula=self.peliculas[busqueda_pelicula]
+                        funcion.hora_fin=funcion.hora_inicio + timedelta(minutes=funcion.pelicula.duracion)
+                        funcion.matriz_asientos=np.full((self.salas[busqueda_sala].filas, self.salas[busqueda_sala].sillas_fila), fill_value=0, dtype=int)
+                        if self.verificar_funcion(funcion, self.salas[busqueda_sala]):
+                            self.salas[busqueda_sala].set_funcion_programacion(funcion)
+                        else:
+                            print(f"¡¡Error!! Traslape con '{self.peliculas[busqueda_pelicula].nombre_es}' en sala {self.salas[busqueda_sala].id}.")
+                    else:
+                        print("Pelicula no encontrada.")
+                except:
+                    print("Ingresa un valor numerico.")
             else:
-                print("Pelicula no encontrada.")
-        else:
-            print("Sala no encontrada")
+                print("Sala no encontrada")
+        except:
+            print("Ingresa un valor numerico.")
 
     def reservar_boleta(self):
         self.consultar_programacion_pelicula()
@@ -417,11 +504,6 @@ class AppCine():
                     print(f"**** BOLETA *****\nSala: {sala.id}\nPelícula: {funcion.pelicula.nombre_es}\nFecha: {date.today()}\nAsientos reservados: {lista_asientos_reservados}\nTotal: ${cantidad_asientos * sala.valor_boleta}**** FIN BOLETA *****")
                     return  # Salimos después de reservar
         print("No se encontró la sala o película indicada.")
-
-
-                            
-
-
         
 
     def verificar_funcion(self, funcion, sala):
@@ -443,35 +525,46 @@ class AppCine():
    
 
     def mostrar_funcion_sala(self):
+        """Este método se encarga de mostrar las funciones de una sala dada."""
         self.mostrar_salas_disponibles()
-        op=int(input("Introduce el id de la sala que quieres ver: "))    
-        b=self.buscar_sala(op)
-        if b!=-1:
-            for i in range(self.salas[b].n_funciones):
-                print(self.salas[b].programacion[i].pelicula.nombre_es)
-
+        try:
+            op=int(input("Introduce el id de la sala que quieres ver: "))    
+            b=self.buscar_sala(op)
+            if b!=-1:
+                for i in range(self.salas[b].n_funciones):
+                    print(self.salas[b].programacion[i].pelicula.nombre_es)
+        except:
+            print("Ingrese un valor numerico.")
 
     def eliminar_funcion_sala(self):
+        """Este método se encarga de eliminar una función de una sala dada."""
         self.mostrar_salas_disponibles()
-        op=int(input("Introduce el id de la sala que quieres ver: "))    
-        b=self.buscar_sala(op)
-        if b!=-1:
-            for i in range(self.salas[b].n_funciones):
-                print("Nombre: ",self.salas[b].programacion[i].pelicula.nombre_es, " - ID: ", self.salas[b].programacion[i].pelicula.id)
-        op_e=int(input("Introduce el id de la pelicula que deseas eliminar: "))
-        p=self.salas[b].buscar_funcion(op_e)
-        if p!=-1:
-            for _ in range(self.salas[b].n_funciones-1):
-                self.salas[b].programacion[p]=self.salas[b].programacion[p+1]
-                self.salas[b].programacion[self.salas[b].n_funciones]=None
+        try:
+            op=int(input("Introduce el id de la sala que quieres ver: "))    
+            b=self.buscar_sala(op)
+            if b!=-1:
+                for i in range(self.salas[b].n_funciones):
+                    print("Nombre: ",self.salas[b].programacion[i].pelicula.nombre_es, " - ID: ", self.salas[b].programacion[i].pelicula.id)
+            op_e=int(input("Introduce el id de la pelicula que deseas eliminar: "))
+            p=self.salas[b].buscar_funcion(op_e)
+            if p!=-1:
+                for _ in range(self.salas[b].n_funciones-1):
+                    self.salas[b].programacion[p]=self.salas[b].programacion[p+1]
+                self.salas[b].programacion[self.salas[b].n_funciones-1]=None
                 self.salas[b].n_funciones-=1
-            print("Se elimino correctamente")
-            return True
-        return False
+                print("Se elimino correctamente")
+                return True
+            return False
+        except:
+            print("Ingrese un valor numerico.")
 
     def crear_sala(self):
         nueva_sala=Sala()
         nueva_sala.pedir_datos()
+        for i in range(self.n_salas):
+            while self.salas[i].id==nueva_sala.id:
+                print("Sala con ID existente.")
+                nueva_sala.pedir_datos()
         self.salas[self.n_salas]=nueva_sala
         self.n_salas+=1
         self.guardar_datos()
@@ -482,21 +575,24 @@ class AppCine():
         while op!=3:
             print ("\n%% MENÚ DE APLICACIÓN %%\n")
             print("1. Registrarse \n2. Auntenticarse \n3. Salir de la app")
-            op=int(input("Seleccione una opción del menú: "))
-            match(op):
-                case 1:
-                    self.registrar_usuario()
-                case 2:
-                    if self.autenticar_usuario():
-                        if self.usuario_autenticado.tipo==Usuario.PERFIL_ADMIN:
-                            self.mostrar_menu_admin()
-                        elif self.usuario_autenticado.tipo==Usuario.PERFIL_CLIENTE:
-                            self.mostrar_menu_cliente()
-                        elif self.usuario_autenticado.tipo==Usuario.PERFIL_VENDEDOR:
-                            self.mostrar_menu_vendedor()
-                case 3:
-                    self.usuario_autenticado=None
-                    print("Aplicación terminada")
+            try:
+                op=int(input("Seleccione una opción del menú: "))
+                match(op):
+                    case 1:
+                        self.registrar_usuario()
+                    case 2:
+                        if self.autenticar_usuario():
+                            if self.usuario_autenticado.tipo==Usuario.PERFIL_ADMIN:
+                                self.mostrar_menu_admin()
+                            elif self.usuario_autenticado.tipo==Usuario.PERFIL_CLIENTE:
+                                self.mostrar_menu_cliente()
+                            elif self.usuario_autenticado.tipo==Usuario.PERFIL_VENDEDOR:
+                                self.mostrar_menu_vendedor()
+                    case 3:
+                        self.usuario_autenticado=None
+                        print("Aplicación terminada")
+            except:
+                print("Ingresa un dato válido.")
     def guardar_datos(self):
         """Guarda usuarios, salas y películas en archivos pickle"""
         with open("usuarios.pkl", "wb") as f:

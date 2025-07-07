@@ -36,17 +36,21 @@ class Pelicula():
         self.calificacion=""
 
     def pedir_datos(self):
-
         """Este método pide los datos de la película y los asigna a su atributo correspondiente."""
-        self.id=int(input("Introduce el id de la película: "))
-        self.nombre_es=input("Introduce el nombre en español de la película: ")
-        self.duracion=int(input("Introduce la duración de la película en minutos: "))
-        self.nombre_or=input("Introduce el nombre original de la película: ")
-        self.año_estreno=int(input("Introduce el año de estreno de la película: "))
-        self.genero=input("Introduce el género de la película: ")
-        self.pais_estreno=input("Introduce el país de estreno de la película: ")
-        self.activa=int(input("Introduce el estado de la película:\n1.Activa\n2.No Activa\nOpción: "))
-        while self.activa!=1 and self.activa!=2:
-            print("Opción no valida. Intentalo de nuevo.")
-            self.activa=int(input("Introduce si la película esta activa:\n1.SI\n2.NO\nOpción: "))
-        self.calificacion=int(input("Introduce una valoración de la película entre 1-10: "))
+        while True:
+            try:
+                self.id=int(input("Introduce el id de la película: "))
+                self.nombre_es=input("Introduce el nombre en español de la película: ")
+                self.duracion=int(input("Introduce la duración de la película en minutos: "))
+                self.nombre_or=input("Introduce el nombre original de la película: ")
+                self.año_estreno=int(input("Introduce el año de estreno de la película: "))
+                self.genero=input("Introduce el género de la película: ")
+                self.pais_estreno=input("Introduce el país de estreno de la película: ")
+                self.activa=int(input("Introduce el estado de la película:\n1.Activa\n2.No Activa\nOpción: "))
+                while self.activa!=1 and self.activa!=2:
+                    print("Opción no valida. Intentalo de nuevo.")
+                    self.activa=int(input("Introduce si la película esta activa:\n1.SI\n2.NO\nOpción: "))
+                self.calificacion=int(input("Introduce una valoración de la película entre 1-10: "))
+                break
+            except:
+                print("Ingresa un dato válido.")

@@ -36,18 +36,18 @@ class Sala():
 
     def pedir_datos(self):
         """Este método se encarga de pedir los datos y asignarlos a su atributo correspondiente"""
-        self.id=int(input("Introduce el id de la sala: "))
-        self.filas=int(input("Introduce el numero de filas de la sala: "))
-        self.sillas_fila=int(input("Introduce el numero de sillas en cada fila: "))
-        self.valor_boleta=float(input("Introduce valor de la boleta para la sala: "))
-#        n=int(input("Ingresa cuantas películas deseas añadir a la programacion de esta sala. (0-5): "))
-#        while n<0 or n>5:
-#            print("El número de películas que elgiste no esta dentro del rango. Intentalo de nuevo")
-#            n=int(input("Ingresa cuantas películas deseas añadir a la programacion de esta sala. (0-5): "))
-#        for _ in range(n):
-#            self.programacion.pedir_datos()
+        while True:
+            try:
+                self.id=int(input("Introduce el id de la sala: "))
+                self.filas=int(input("Introduce el numero de filas de la sala: "))
+                self.sillas_fila=int(input("Introduce el numero de sillas en cada fila: "))
+                self.valor_boleta=float(input("Introduce valor de la boleta para la sala: "))
+                break
+            except:
+                print("Introduce un valor numérico.")
 
     def set_funcion_programacion(self, funcion):
+        """Este método se encarga de asignar una funcion a la programación de la sala."""
         if self.n_funciones<5:
             self.programacion[self.n_funciones]=funcion
             self.n_funciones+=1
@@ -55,6 +55,7 @@ class Sala():
             print("Capacidad de la sala llena")
 
     def buscar_funcion(self, id):
+        """Este método se encarga de buscar la posición de una función dentro de la lista de programación y retornar la posición"""
         for i in range(self.n_funciones):
             if self.programacion[i].pelicula.id==id:
                 return i
