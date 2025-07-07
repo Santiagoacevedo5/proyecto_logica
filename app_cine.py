@@ -577,6 +577,8 @@ class AppCine():
             print("1. Registrarse \n2. Auntenticarse \n3. Salir de la app")
             try:
                 op=int(input("Seleccione una opción del menú: "))
+                if op<1 or op>3:
+                        print("Opción no válida. Por favor, introduce un número entre 1 y 3.")
                 match(op):
                     case 1:
                         self.registrar_usuario()
@@ -595,32 +597,32 @@ class AppCine():
                 print("Ingresa un dato válido.")
     def guardar_datos(self):
         """Guarda usuarios, salas y películas en archivos pickle"""
-        with open("usuarios.pkl", "wb") as f:
+        with open("usuarios1.pkl", "wb") as f:
             pickle.dump(self.usuarios[:self.n_usuarios], f)
-        with open("salas.pkl", "wb") as f:
+        with open("salas1.pkl", "wb") as f:
             pickle.dump(self.salas[:self.n_salas], f)
-        with open("peliculas.pkl", "wb") as f:
+        with open("peliculas1.pkl", "wb") as f:
             pickle.dump(self.peliculas[:self.n_peliculas], f)
 
     def cargar_datos(self):
         """Carga usuarios, salas y películas desde archivos pickle si existen"""
         import os
-        if os.path.exists("usuarios.pkl"):
-            with open("usuarios.pkl", "rb") as f:
+        if os.path.exists("usuarios1.pkl"):
+            with open("usuarios1.pkl", "rb") as f:
                 usuarios_cargados = pickle.load(f)
                 for i, usuario in enumerate(usuarios_cargados):
                     self.usuarios[i] = usuario
                 self.n_usuarios = len(usuarios_cargados)
 
-        if os.path.exists("salas.pkl"):
-            with open("salas.pkl", "rb") as f:
+        if os.path.exists("salas1.pkl"):
+            with open("salas1.pkl", "rb") as f:
                 salas_cargadas = pickle.load(f)
                 for i, sala in enumerate(salas_cargadas):
                     self.salas[i] = sala
                 self.n_salas = len(salas_cargadas)
 
-        if os.path.exists("peliculas.pkl"):
-            with open("peliculas.pkl", "rb") as f:
+        if os.path.exists("peliculas1.pkl"):
+            with open("peliculas1.pkl", "rb") as f:
                 peliculas_cargadas = pickle.load(f)
                 for i, pelicula in enumerate(peliculas_cargadas):
                     self.peliculas[i] = pelicula
