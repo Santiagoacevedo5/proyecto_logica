@@ -47,7 +47,7 @@ class Programacion:
             sala_existente = self.salas[i]
             if sala_existente != None and sala_existente.id == sala.id:
                 if not (fin <= self.inicios[i] or inicio >= self.fines[i]):
-                    print(f"[Error] Traslape con '{self.peliculas[i].nombre_es}' en sala {sala.id}.")
+                    print(f"Error Traslape con '{self.peliculas[i].nombre_es}' en sala {sala.id}.")
                     return False
 
         if self.contador < self.MAX_DE_PROGRAMACIONES:

@@ -5,7 +5,7 @@ import numpy as np
 from sala import Sala
 from complejo_salas import Complejo_Salas
 from programacion import Programacion
-from datetime import date, timedelta
+from datetime import date, timedelta, time
 import pickle
 
 class AppCine():
@@ -165,42 +165,48 @@ class AppCine():
             print("\n%% MENÚ DE OPCIONES USUARIO ADMIN %%\n")
             print("1. Crear Película\n2. Mostrar detalles de película\n3. Modificar película\n4. Eliminar Película\n5. Crear Función\n6. Modificar Función\n7. Eliminar Función\n8. Crear Sala\n9. Modificar Sala\n10. Eliminar Sala\n11. Crear Cliente\n12. Eliminar Cliente\n13. Consultar % de ocupación de una película\n14. Consultar programación del complejo completo \n15. Consultar programación de una película \n16. Modificar programación de una sala\n17. Consultar ganancias de una sala o complejo\n18. Salir")
             opcion=int(input("Introduce la opción que deseas: "))
-            match(opcion):
-                case 1:
-                    self.crear_pelicula()
-                case 2:
-                    self.mostrar_detalles_pelicula()
-                case 3:
-                    self.modificar_pelicula()
-                case 4:
-                    self.eliminar_pelicula()
-                case 5:
-                    self.annadir_pelicula_funcion()
-                case 6:
-                    self.mostrar_funciones()
-                case 7:
-                    self.eliminar_funcion_sala()
-                case 8:
-                    self.crear_sala()
-                case 15:
-                    self.consultar_ocupacion_pelicula()
-                case 16:
-                    self.consultar_programacion_complejo()
-                case 17:
-                    self.consultar_programacion_pelicula()
-                case 18:
-                    self.modificar_programacion_sala()
-                case 19:
-                    self.consultar_ganancias_sala_o_complejo()
-                case 20:
-                    break
+            try:
+                match(opcion):
+                    case 1:
+                        self.crear_pelicula()
+                    case 2:
+                        self.mostrar_detalles_pelicula()
+                    case 3:
+                        self.modificar_pelicula()
+                    case 4:
+                        self.eliminar_pelicula()
+                    case 5:
+                        self.annadir_pelicula_funcion()
+                    case 6:
+                        self.mostrar_funciones()
+                    case 7:
+                        self.eliminar_funcion_sala()
+                    case 8:
+                        self.crear_sala()
+                    case 13:
+                        self.consultar_ocupacion_pelicula()
+                    case 14:
+                        self.consultar_programacion_complejo()
+                    case 15:
+                        self.consultar_programacion_pelicula()
+                    case 16:
+                        self.modificar_programacion_sala()
+                    case 17:
+                        self.consultar_ganancias_sala_o_complejo()
+                    case 18:
+                        break
+                    case _:
+                        if opcion<1 or opcion>19:
+                            print("Opción no válida. Por favor, introduce un número entre 1 y 19.")
+            except ValueError:
+                    print("Entrada inválida. Por favor, introduce un número entero: ")
     def consultar_programacion_complejo(self):
         """Este método se encarga de consultar la programación de un complejo"""
         for i in range(self.n_salas):
             print(f"Sala {self.salas[i].id}:")
             for j in range(self.salas[i].n_funciones):
                 funcion = self.salas[i].programacion[j]
-                print(f"  - {funcion.pelicula.nombre_es} ({funcion.fecha}) - {funcion.hora_inicio} a {funcion.hora_fin}")    
+                print(f"  - {funcion.pelicula.nombre_es} ({funcion.fecha.date()}) - {funcion.hora_inicio.time()} a {funcion.hora_fin.time()}")    
     
     def consultar_programacion_pelicula(self):
         """Este método se encarga de consultar la programación de una película en todas las salas"""

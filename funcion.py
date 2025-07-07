@@ -1,15 +1,15 @@
 from pelicula import Pelicula
 import numpy as np
 import datetime
-from datetime import timedelta
+from datetime import timedelta, date, time
 
 
 class Funcion():
 
     pelicula=Pelicula
-    fecha=datetime
-    hora_inicio=datetime
-    hora_fin=datetime
+    fecha=datetime.date
+    hora_inicio=datetime.time
+    hora_fin=datetime.time
     matriz_asientos=np.ndarray
 
     def __init__(self):
