@@ -206,20 +206,36 @@ class AppCine():
             print(f"Sala {self.salas[i].id}:")
             for j in range(self.salas[i].n_funciones):
                 funcion = self.salas[i].programacion[j]
-                print(f"  - {funcion.pelicula.nombre_es} ({funcion.fecha.date()}) - {funcion.hora_inicio.time()} a {funcion.hora_fin.time()}")    
+                print(f"  - {funcion.pelicula.nombre_es} ({funcion.fecha.date()}) - {funcion.hora_inicio.strftime('%H:%M')} a {funcion.hora_fin.strftime('%H:%M')}")    
     
     def consultar_programacion_pelicula(self):
         """Este método se encarga de consultar la programación de una película en todas las salas"""
         self.mostrar_peliculas_activas()
-        try:
-            id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
-            for i in range(self.n_salas):
-                for j in range(self.salas[i].n_funciones):
-                    if self.salas[i].programacion[j].pelicula.id==id_pelicula:
-                        funcion = self.salas[i].programacion[j]
-                        print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha} - {funcion.hora_inicio} a {funcion.hora_fin}")
-        except ValueError:
-            print("ID de película inválido. Por favor, introduce un número entero: ")                    
+        while True:
+            try:
+                id_pelicula = int(input("Introduce el id de la película que deseas consultar (o -1 para salir): "))
+                if id_pelicula == -1:
+                    break
+
+                encontrado = False
+                for i in range(self.n_salas):
+                    for j in range(self.salas[i].n_funciones):
+                        if self.salas[i].programacion[j].pelicula.id == id_pelicula:
+                            funcion = self.salas[i].programacion[j]
+                            print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha.date()} - {funcion.hora_inicio.strftime('%H:%M')} a {funcion.hora_fin.strftime('%H:%M')}")
+                            encontrado = True
+
+                if not encontrado:
+                    print("No se encontraron funciones para la película con el ID proporcionado.")
+                    input("Presiona Enter para intentar de nuevo...")
+
+                else:
+                    input("Presiona Enter para volver al menú...")
+                    break  # Se encontró la película, salimos del bucle
+
+            except ValueError:
+                print("ID de película inválido. Por favor, introduce un número entero.")
+                  
     def consultar_ocupacion_pelicula(self):
         """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
         self.mostrar_peliculas_activas()
