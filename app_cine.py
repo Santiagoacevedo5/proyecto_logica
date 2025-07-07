@@ -309,7 +309,7 @@ class AppCine():
         print("\n%% SALAS DISPONIBLES %%\n")
         contador=1
         for i in range(self.n_salas):
-            print("SALA #",contador, " - ID: ", self.salas[i].id)
+            print("SALA #",contador, " - ID: ", self.salas[i].id," - Número de boletas vendidas: ", self.salas[i].boletas_vendidas, " - Valor de la boleta: ", self.salas[i].valor_boleta)
             contador+=1
 
 
@@ -350,18 +350,18 @@ class AppCine():
                         print("Asientos disponibles (0 = libre, 1 = reservado):")
                         print(funcion.matriz_asientos)
 
-                        fila = int(input("Introduce la fila que deseas reservar: "))-1
+                        fila = int(input("Introduce la fila que deseas reservar: ")) - 1
                         lista_asientos_reservados = []
                         cantidad_asientos = 0
 
                         while True:
-                            silla = int(input("Introduce el número de silla que deseas reservar: "))-1
-                            if 1 <= fila < funcion.matriz_asientos.shape[0] and 1 <= silla < funcion.matriz_asientos.shape[1]:
+                            silla = int(input("Introduce el número de silla que deseas reservar: ")) - 1
+                            if 0 <= fila < funcion.matriz_asientos.shape[0] and 0 <= silla < funcion.matriz_asientos.shape[1]:
                                 if funcion.matriz_asientos[fila][silla] == 0:
                                     funcion.matriz_asientos[fila][silla] = 1
-                                    lista_asientos_reservados.append((fila, silla))
+                                    lista_asientos_reservados.append((fila + 1, silla + 1))  
                                     cantidad_asientos += 1
-                                    self.salas[sala.id].boletas_vendidas += 1
+                                    sala.boletas_vendidas += 1  
                                     print("Boleta reservada con éxito.")
                                 else:
                                     print("La boleta ya está reservada.")
@@ -371,6 +371,7 @@ class AppCine():
                             n = input("¿Deseas reservar otra boleta? (1.Sí / 2.No): ")
                             if n != "1":
                                 break
+
 
                     
                         self.guardar_datos()

@@ -18,6 +18,6 @@ class Funcion():
         self.matriz_asientos=None
 
     def pedir_datos(self):
-        self.pelicula=input("Introduce el id de la pelicula que quieres agregar: ")
-        self.fecha=datetime.datetime.strptime((input("Introduce la fecha de la funcion: ")), "%d-%m-%Y")
-        self.hora_inicio=datetime.datetime.strptime((input("Introduce la hora de inicio de la pelicula: ")), "%H:%M")
+        self.pelicula=input("Introduce el id de la película que quieres agregar a la función: ")
+        self.fecha=datetime.datetime.strptime((input("Introduce la fecha de la función en formato DD-MM-YYYY: ")), "%d-%m-%Y")
+        self.hora_inicio=datetime.datetime.strptime((input("Introduce la hora de inicio de la película en formato HH:MM: ")), "%H:%M")
