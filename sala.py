@@ -7,9 +7,13 @@ class Sala():
 
     ATRIBUTOS:
     id: identificador de la sala
-    tamaño: el tamaño de la sala enterminos de sillas
-    programación: la programación de películas de la sala
-    n_peliculas: número de películas que tiene la sala
+    valor_boleta: el valor de la boleta para la sala
+    filas: el número de filas de la sala
+    sillas_fila: el número de sillas por fila
+    boletas_vendidas: el número de boletas vendidas en la sala
+    MAX_PELICULAS: el número máximo de películas que puede tener la sala
+    n_funciones: el número de funciones que tiene la sala
+    programacion: un arreglo de funciones que representa la programación de la sala
     """
     id=int
     programacion=np.ndarray
