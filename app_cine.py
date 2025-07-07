@@ -182,6 +182,8 @@ class AppCine():
                     self.eliminar_funcion_sala()
                 case 8:
                     self.crear_sala()
+                case 15:
+                    self.consultar_ocupacion_pelicula()
                 case 16:
                     self.consultar_programacion_complejo()
                 case 17:
@@ -212,7 +214,20 @@ class AppCine():
                         print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {funcion.fecha} - {funcion.hora_inicio} a {funcion.hora_fin}")
         except ValueError:
             print("ID de película inválido. Por favor, introduce un número entero: ")                    
-    
+    def consultar_ocupacion_pelicula(self):
+        """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
+        self.mostrar_peliculas_activas()
+        try:
+            id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
+            for i in range(self.n_salas):
+                for j in range(self.salas[i].n_funciones):
+                    if self.salas[i].programacion[j].pelicula.id==id_pelicula:
+                        funcion = self.salas[i].programacion[j]
+                        ocupacion = (self.salas[i].boletas_vendidas / (self.salas[i].filas*self.salas[i].sillas_fila)) * 100
+                        print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {ocupacion}% de ocupación")
+        except ValueError:
+            print("ID de película inválido. Por favor, introduce un número entero: ")
+
     def modificar_programacion_sala(self):
         """Este método se encarga de modificar la programación de una sala"""
         self.mostrar_salas_disponibles()
@@ -220,7 +235,7 @@ class AppCine():
             id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
             busqueda_sala=self.buscar_sala(id_sala)
             if busqueda_sala!=-1:
-                self.salas[busqueda_sala].buscar_funcion()
+                self.salas[busqueda_sala].buscar_funcion(id_sala)
                 try:
                     id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
                     funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
@@ -309,7 +324,7 @@ class AppCine():
         print("\n%% SALAS DISPONIBLES %%\n")
         contador=1
         for i in range(self.n_salas):
-            print("SALA #",contador, " - ID: ", self.salas[i].id)
+            print("SALA #",contador, " - ID: ", self.salas[i].id," - Número de boletas vendidas: ", self.salas[i].boletas_vendidas, " - Valor de la boleta: ", self.salas[i].valor_boleta)
             contador+=1
 
 
@@ -350,18 +365,18 @@ class AppCine():
                         print("Asientos disponibles (0 = libre, 1 = reservado):")
                         print(funcion.matriz_asientos)
 
-                        fila = int(input("Introduce la fila que deseas reservar: "))-1
+                        fila = int(input("Introduce la fila que deseas reservar: ")) - 1
                         lista_asientos_reservados = []
                         cantidad_asientos = 0
 
                         while True:
-                            silla = int(input("Introduce el número de silla que deseas reservar: "))-1
-                            if 1 <= fila < funcion.matriz_asientos.shape[0] and 1 <= silla < funcion.matriz_asientos.shape[1]:
+                            silla = int(input("Introduce el número de silla que deseas reservar: ")) - 1
+                            if 0 <= fila < funcion.matriz_asientos.shape[0] and 0 <= silla < funcion.matriz_asientos.shape[1]:
                                 if funcion.matriz_asientos[fila][silla] == 0:
                                     funcion.matriz_asientos[fila][silla] = 1
-                                    lista_asientos_reservados.append((fila, silla))
+                                    lista_asientos_reservados.append((fila + 1, silla + 1))  
                                     cantidad_asientos += 1
-                                    self.salas[sala.id].boletas_vendidas += 1
+                                    sala.boletas_vendidas += 1  
                                     print("Boleta reservada con éxito.")
                                 else:
                                     print("La boleta ya está reservada.")
@@ -371,6 +386,7 @@ class AppCine():
                             n = input("¿Deseas reservar otra boleta? (1.Sí / 2.No): ")
                             if n != "1":
                                 break
+
 
                     
                         self.guardar_datos()
