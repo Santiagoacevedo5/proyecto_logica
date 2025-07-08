@@ -406,6 +406,7 @@ class AppCine():
                 case 6:
                     break
     def mostrar_funciones_sala(self):
+        #santiago acevedo 04/7/2025
         """Este método se encarga de mostrar las funciones de una sala dada"""
         self.mostrar_salas_disponibles()
         try:
