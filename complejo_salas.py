@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 #Jesica Estor 20/06/2025
-=======
-# Mateo Ursuga 30/6/2025 10:00am
->>>>>>> bbd03f7f3c829d8fcdba860f221d72ae82b5c7f1
 import numpy as np
 class Complejo_Salas():
 
