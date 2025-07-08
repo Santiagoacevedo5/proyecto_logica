@@ -276,7 +276,7 @@ class AppCine():
 
             except ValueError:
                 print("ID de película inválido. Por favor, introduce un número entero.")
-#Jesica Estor 3/07/2025                 
+            
     def consultar_ocupacion_pelicula(self):
         """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
         #hecha por santiago acevedo 05/7/2025 6:00pm
