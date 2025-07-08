@@ -1,4 +1,4 @@
-#Jesica Estor 20/06/2025
+#Jesica Estor 30/06/2025
 import numpy as np
 class Complejo_Salas():
 
