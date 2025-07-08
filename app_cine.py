@@ -190,7 +190,7 @@ class AppCine():
         if peliculas_activas_count == 0:
             print("No hay películas activas para mostrar.")
             return False
-
+#Jesica Estor 2/07/2025
     def mostrar_menu_admin(self):
         """Este método muestra las opciones dentro del menú del administrador"""
         opcion=0
@@ -241,6 +241,7 @@ class AppCine():
                             print("Opción no válida. Por favor, introduce un número entre 1 y 19.")
             except ValueError:
                     print("Entrada inválida. Por favor, introduce un número entero: ")
+#Jesica Estor 2/07/2025
     def consultar_programacion_complejo(self):
         """Este método se encarga de consultar la programación de un complejo"""
         for i in range(self.n_salas):
@@ -248,7 +249,7 @@ class AppCine():
             for j in range(self.salas[i].n_funciones):
                 funcion = self.salas[i].programacion[j]
                 print(f"  - {funcion.pelicula.nombre_es} ({funcion.fecha.date()}) - {funcion.hora_inicio.strftime('%H:%M')} a {funcion.hora_fin.strftime('%H:%M')}")    
-    
+#Jesica Estor 2/07/2025  
     def consultar_programacion_pelicula(self):
         """Este método se encarga de consultar la programación de una película en todas las salas"""
         self.mostrar_peliculas_activas()
@@ -275,7 +276,7 @@ class AppCine():
 
             except ValueError:
                 print("ID de película inválido. Por favor, introduce un número entero.")
-                  
+#Jesica Estor 3/07/2025                 
     def consultar_ocupacion_pelicula(self):
         """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
         self.mostrar_peliculas_activas()
@@ -289,7 +290,7 @@ class AppCine():
                         print(f"Sala {self.salas[i].id}: {funcion.pelicula.nombre_es} - {ocupacion}% de ocupación")
         except ValueError:
             print("ID de película inválido. Por favor, introduce un número entero: ")
-
+#Jesica Estor 3/07/2025
     def modificar_programacion_sala(self):
         """Este método se encarga de modificar la programación de una sala"""
         self.mostrar_salas_disponibles()
@@ -351,7 +352,7 @@ class AppCine():
                 return False
         except:
             print("Ingrese un dato válido.")
-
+#Jesica Estor 5/07/2025
     def consultar_ganancias_sala_o_complejo(self):
         """Este método se encarga de consultar las ganancias de una sala o complejo"""
         print("1. Consultar ganancias de una sala\n2. Consultar ganancias de un complejo")
@@ -381,6 +382,7 @@ class AppCine():
                 print("Opción no válida.")
         except ValueError:
             print("Entrada inválida. Por favor, introduce un número entero: ")
+#Jesica Estor 5/07/2025
     def mostrar_menu_cliente(self):
         """Este método se encarga de mostrar el menú del cliente"""
         opcion=0
@@ -397,19 +399,22 @@ class AppCine():
                     self.reservar_boleta()
                 case 6:
                     break
-
+#Jesica Estor 4/07/2025
     def mostrar_menu_vendedor(self):
         """ESte método se encarga de mostrar el menú del vendedor."""
         opcion=0
         while opcion!=3:
             print("\n%% MENÚ DE OPCIONES VENDEDOR %%\n")
             print("1. Confirmar reserva\n2. Crear cliente\n3. Salir")
-            opcion=int(input("Introduce la opcion que deseas: "))
-            match(opcion):
-                case 2:
-                    self.registrar_usuario()
-                case 3:
-                    break
+            try:
+                opcion=int(input("Introduce la opcion que deseas: "))
+                match(opcion):
+                    case 2:
+                        self.registrar_usuario()
+                    case 3:
+                        break
+            except ValueError:
+                print("Entrada inválida. Por favor, introduce un número entero: ")
 
     def buscar_pelicula(self, id):
         for i in range(self.n_peliculas):
@@ -591,7 +596,7 @@ class AppCine():
         self.salas[self.n_salas]=nueva_sala
         self.n_salas+=1
         self.guardar_datos()
-
+#Jesica Estor 30/06/2025
     def procesar(self):
         op=0
 
