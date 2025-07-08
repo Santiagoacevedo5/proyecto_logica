@@ -3,9 +3,8 @@ from funcion import Funcion
 from pelicula import Pelicula
 import numpy as np
 from sala import Sala
-from complejo_salas import Complejo_Salas
 from programacion import Programacion
-from datetime import date, timedelta, time
+from datetime import date, timedelta
 import pickle
 
 class AppCine():

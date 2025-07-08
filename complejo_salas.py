@@ -1,7 +1,5 @@
+# Mateo Ursuga 30/6/2025 10:00am
 import numpy as np
-#ESTA CLASE SIGUE EN DESARROLLO. AUN NO SE HA TERMINADO NI IMPLEMENTADO
-
-
 class Complejo_Salas():
 
     """Esta clase representa la plantilla para la creación del complejo de salas
