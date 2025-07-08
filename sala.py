@@ -1,4 +1,4 @@
-#ESTA CLASE SIGUE EN DESARROLLO. AUN NO SE HA TERMINADO NI IMPLEMENTADO
+# Hecha por Santiago Acevedo 01/7/2025 3:00pm
 import numpy as np
 from funcion import Funcion
 class Sala():

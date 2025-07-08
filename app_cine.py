@@ -3,9 +3,8 @@ from funcion import Funcion
 from pelicula import Pelicula
 import numpy as np
 from sala import Sala
-from complejo_salas import Complejo_Salas
 from programacion import Programacion
-from datetime import date, timedelta, time
+from datetime import date, timedelta
 import pickle
 
 class AppCine():
@@ -252,6 +251,7 @@ class AppCine():
 #Jesica Estor 2/07/2025  
     def consultar_programacion_pelicula(self):
         """Este método se encarga de consultar la programación de una película en todas las salas"""
+        #Hecha por santiago acevedo 05/7/2025 2:00pm
         self.mostrar_peliculas_activas()
         while True:
             try:
@@ -279,6 +279,7 @@ class AppCine():
 #Jesica Estor 3/07/2025                 
     def consultar_ocupacion_pelicula(self):
         """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
+        #hecha por santiago acevedo 05/7/2025 6:00pm
         self.mostrar_peliculas_activas()
         try:
             id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
@@ -490,6 +491,7 @@ class AppCine():
 
     def reservar_boleta(self):
         """Este método se encarga de reservar una boleta para una película en una sala específica"""
+        #hecha por santiago acevedo 04/7/2025 1:00pm
         self.consultar_programacion_pelicula()
 
         id_sala = int(input("Introduce el id de la sala que deseas: "))
@@ -624,6 +626,7 @@ class AppCine():
             except:
                 print("Ingresa un dato válido.")
     def guardar_datos(self):
+        #hecha por santiago acevedo 05/7/2025 5:00pm
         """Guarda usuarios, salas y películas en archivos pickle"""
         with open("usuarios1.pkl", "wb") as f:
             pickle.dump(self.usuarios[:self.n_usuarios], f)
@@ -634,6 +637,7 @@ class AppCine():
 
     def cargar_datos(self):
         """Carga usuarios, salas y películas desde archivos pickle si existen"""
+        #hecha por santiago acevedo 05/7/2025 7:00pm
         import os
         if os.path.exists("usuarios1.pkl"):
             with open("usuarios1.pkl", "rb") as f:
@@ -657,9 +661,6 @@ class AppCine():
                 self.n_peliculas = len(peliculas_cargadas)
 
 
-#app=AppCine()
-#app.cargar_datos()
-#app.procesar()
 def main():
     app = AppCine()
     app.cargar_datos()
