@@ -425,13 +425,13 @@ class AppCine():
         opcion=0
         while opcion!=3:
             print("\n%% MENÚ DE OPCIONES VENDEDOR %%\n")
-            print("1. Confirmar reserva\n2. Crear cliente\n3. Salir")
+            print("1. Crear cliente\n2. Salir")
             try:
                 opcion=int(input("Introduce la opcion que deseas: "))
                 match(opcion):
-                    case 2:
+                    case 1:
                         self.registrar_usuario()
-                    case 3:
+                    case 2:
                         break
             except ValueError:
                 print("Entrada inválida. Por favor, introduce un número entero: ")
