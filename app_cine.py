@@ -390,17 +390,35 @@ class AppCine():
         opcion=0
         while opcion!=6:
             print("\n%% MENÚ DE OPCIONES CLIENTE %%\n")
-            print("1. Ver funcion de una sala\n2. Ver funcion de un complejo\n3. Ver programacion de una pelicula\n4. Ver mapa de una sala\n5. Reservar boleta\n6. Salir")
+            print("1. Ver función de una sala\n2. Ver función de un complejo\n3. Ver programación de una película\n4. Consultar detalles de una película\n5. Reservar boleta\n6. Salir")
             opcion=int(input("Introduce la opcion que deseas: "))
             match(opcion):
+                case 1:
+                    self.mostrar_funciones_sala()
                 case 2:
                     self.consultar_programacion_complejo()
                 case 3:
                     self.consultar_programacion_pelicula()
+                case 4:
+                    self.mostrar_detalles_pelicula()
                 case 5:
                     self.reservar_boleta()
                 case 6:
                     break
+    def mostrar_funciones_sala(self):
+        """Este método se encarga de mostrar las funciones de una sala dada"""
+        self.mostrar_salas_disponibles()
+        try:
+            id_sala=int(input("Introduce el id de la sala que deseas consultar: "))
+            busqueda_sala=self.buscar_sala(id_sala)
+            if busqueda_sala!=-1:
+                for funcion in self.salas[busqueda_sala].programacion:
+                    if funcion is not None:
+                        print(f"Película: {funcion.pelicula.nombre_es} - Fecha: {funcion.fecha.date()} - Hora Inicio: {funcion.hora_inicio.strftime('%H:%M')} - Hora Fin: {funcion.hora_fin.strftime('%H:%M')}")
+            else:
+                print("Sala no encontrada.")
+        except ValueError:
+            print("ID de sala inválido. Por favor, introduce un número entero: ")
 #Jesica Estor 4/07/2025
     def mostrar_menu_vendedor(self):
         """ESte método se encarga de mostrar el menú del vendedor."""
