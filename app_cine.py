@@ -257,7 +257,6 @@ class AppCine():
                 id_pelicula = int(input("Introduce el id de la película que deseas consultar (o -1 para salir): "))
                 if id_pelicula == -1:
                     break
-
                 encontrado = False
                 for i in range(self.n_salas):
                     for j in range(self.salas[i].n_funciones):
@@ -485,6 +484,7 @@ class AppCine():
             print("Ingresa un valor numerico.")
 
     def reservar_boleta(self):
+        """Este método se encarga de reservar una boleta para una película en una sala específica"""
         self.consultar_programacion_pelicula()
 
         id_sala = int(input("Introduce el id de la sala que deseas: "))
