@@ -1,3 +1,4 @@
+#Mateo Ursuga 2/07/2025
 from pelicula import Pelicula
 import numpy as np
 import datetime

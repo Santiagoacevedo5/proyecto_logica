@@ -1,3 +1,4 @@
+#Mateo Ursuga 2/07/2025
 import numpy as np
 class Usuario():
 

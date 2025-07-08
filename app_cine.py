@@ -36,7 +36,7 @@ class AppCine():
     MAX_USUARIOS=30
     MAX_PELICULAS=40
     MAX_SALAS=10
-
+#Mateo Ursuga 2/07/2025
     def __init__(self):
         self.usuarios=np.full((self.MAX_USUARIOS), fill_value=None, dtype=object)
         self.peliculas=np.full((self.MAX_PELICULAS), fill_value=None, dtype=object)
@@ -52,7 +52,7 @@ class AppCine():
         self.n_peliculas=0
         self.n_salas=0
         self.programacion=Programacion()
-
+#Mateo Ursuga 2/07/2025
     def registrar_usuario(self):
         """Este método se encarga de registrar nuevos usuarios"""
         usuario=Usuario()
@@ -64,7 +64,7 @@ class AppCine():
         self.usuarios[self.n_usuarios]=usuario
         self.n_usuarios+=1
         self.guardar_datos()
-
+#Mateo Ursuga 3/07/2025
     def autenticar_usuario(self):
         """Este método se encarga de autenticas y validar la informacion de los usuarios que estan entrando a la aplicación"""
         print("\n%% AUTENTICAR USUARIO %%\n")
@@ -84,12 +84,12 @@ class AppCine():
             return False
         except:
             print("Ingresa un dato válido.")
-    
+    #Mateo Ursuga 4/07/2025
     def mostrar_clientes(self):
         for i in range(self.n_usuarios):
             if self.usuarios[i].tipo==1:
                 print("ID: ", self.usuarios[i].id, " - Nombre: ", self.usuarios[i].nombre)
-
+#Mateo Ursuga 28/06/2025
     def eliminar_usuario(self):
         """Este método se encarga de eliminar usuarios."""
         self.mostrar_clientes()
@@ -106,7 +106,7 @@ class AppCine():
             return False
         except ValueError:
             print("Introduce un valor numérico.")
-
+#Mateo Ursuga 2/07/2025
     def buscar_usuario(self, id):
         for i in range(self.n_usuarios):
             if self.usuarios[i].id==id:
@@ -114,7 +114,7 @@ class AppCine():
         return -1 
     
         
-
+#Mateo Ursuga 2/07/2025
     def crear_pelicula(self):
         """Este método se encarga de crear películas dentro del sistema"""
         nueva_pelicula=Pelicula()
@@ -123,7 +123,7 @@ class AppCine():
         print("PELICULA CREADA CON EXITO!!!!")
         self.n_peliculas+=1
         self.guardar_datos()
-
+#Mateo Ursuga 2/07/2025
     def modificar_pelicula(self):
         """Este método se encarga de modificar el estado de una película a activa/inactiva según corresponda"""
         self.mostrar_total_peliculas()
@@ -141,10 +141,11 @@ class AppCine():
         print("Película no encontrada")
         self.guardar_datos()
         return
+#Mateo Ursuga 2/07/2025
     def mostrar_total_peliculas(self):
         for i in range(self.n_peliculas):
             print(f"{i+1}. Nombre: {self.peliculas[i].nombre_es}.   ID: {self.peliculas[i].id}")
-
+#Mateo Ursuga 2/07/2025
     def eliminar_pelicula(self):
         """Este método se encarga de eliminar películas ya existentes en el sistema"""
         self.mostrar_peliculas_activas()
@@ -164,7 +165,7 @@ class AppCine():
             return True
         else:
             return False
-
+#Mateo Ursuga 2/07/2025
     def mostrar_detalles_pelicula(self):
         """Este método se encarga de mostrar al usuario los detalles de la película que esta consultando"""
         if self.mostrar_peliculas_activas()!=False:
@@ -175,7 +176,7 @@ class AppCine():
                         print(f"\n1. ID: {self.peliculas[i].id}\nNombre en español: {self.peliculas[i].nombre_es}\n3. Duración: {self.peliculas[i].duracion}\n4. Nombre original: {self.peliculas[i].nombre_or}\n5. Año de estreno: {self.peliculas[i].año_estreno}\n6. País de estreno: {self.peliculas[i].pais_estreno}\n7. Género: {self.peliculas[i].genero}\n8.Estado: Activa\n9. Calificacion: {self.peliculas[i].calificacion}")
                     else:
                         print(f"\n1. ID: {self.peliculas[i].id}\nNombre en español: {self.peliculas[i].nombre_es}\n3. Duración: {self.peliculas[i].duracion}\n4. Nombre original: {self.peliculas[i].nombre_or}\n5. Año de estreno: {self.peliculas[i].año_estreno}\n6. País de estreno: {self.peliculas[i].pais_estreno}\n7. Género: {self.peliculas[i].genero}\n8.Estado: Activa\n9. Calificacion: {self.peliculas[i].calificacion}")
-
+#Mateo Ursuga 2/07/2025
     def mostrar_peliculas_activas(self):
         """Este método muestra la lista de películas activas actualmente en el sistema"""
         print("\n%% Películas disponibles %%")
@@ -251,7 +252,7 @@ class AppCine():
 #Jesica Estor 2/07/2025  
     def consultar_programacion_pelicula(self):
         """Este método se encarga de consultar la programación de una película en todas las salas"""
-        #Hecha por santiago acevedo 05/7/2025 2:00pm
+        # santiago acevedo 05/7/2025 
         self.mostrar_peliculas_activas()
         while True:
             try:
@@ -279,7 +280,7 @@ class AppCine():
 #Jesica Estor 3/07/2025                 
     def consultar_ocupacion_pelicula(self):
         """Este método se encarga de consultar el porcentaje de ocupación de una película en todas las salas"""
-        #hecha por santiago acevedo 05/7/2025 6:00pm
+        #santiago acevedo 05/7/2025 
         self.mostrar_peliculas_activas()
         try:
             id_pelicula=int(input("Introduce el id de la película que deseas consultar: "))
@@ -316,7 +317,7 @@ class AppCine():
                 print("Sala no encontrada.")
         except ValueError:
             print("ID de sala inválido. Por favor, introduce un número entero: ")
-        
+#Mateo Ursuga 2/07/2025        
     def modificar_sala(self):
         """Este método se encarga de modificar una sala dada."""
         self.mostrar_salas_disponibles()
@@ -334,7 +335,7 @@ class AppCine():
                 print("Sala no encontrada")
         except:
             print("Ingresa un valor válido")
-
+#Mateo Ursuga 2/07/2025        
     def eliminar_sala(self):
         """Este método se encarga de eliminar una sala dada."""
         self.mostrar_salas_disponibles()
@@ -416,6 +417,7 @@ class AppCine():
                         break
             except ValueError:
                 print("Entrada inválida. Por favor, introduce un número entero: ")
+#Mateo Ursuga 2/07/2025        
 
     def buscar_pelicula(self, id):
         for i in range(self.n_peliculas):
@@ -428,6 +430,7 @@ class AppCine():
             if self.salas[i].id==id:
                 return i
         return -1 
+#Mateo Ursuga 1/07/2025        
 
     def mostrar_salas_disponibles(self):
         print("\n%% SALAS DISPONIBLES %%\n")
@@ -435,6 +438,7 @@ class AppCine():
         for i in range(self.n_salas):
             print("SALA #",contador, " - ID: ", self.salas[i].id," - Número de boletas vendidas: ", self.salas[i].boletas_vendidas, " - Valor de la boleta: ", self.salas[i].valor_boleta)
             contador+=1
+#Mateo Ursuga 1/07/2025        
 
     def modificar_funcion(self):
         """Este método se encarga de modificar una función de una sala dada."""
@@ -460,6 +464,8 @@ class AppCine():
                 print("Sala no encontrada.")
         except ValueError:
             print("ID de sala inválido. Por favor, introduce un número entero: ")
+#Mateo Ursuga 2/07/2025        
+    
     def annadir_pelicula_funcion(self):
         self.mostrar_salas_disponibles()
         try:
@@ -488,10 +494,11 @@ class AppCine():
                 print("Sala no encontrada")
         except:
             print("Ingresa un valor numerico.")
+       
 
     def reservar_boleta(self):
         """Este método se encarga de reservar una boleta para una película en una sala específica"""
-        #hecha por santiago acevedo 04/7/2025 1:00pm
+        #  santiago acevedo 04/7/2025 
         self.consultar_programacion_pelicula()
 
         id_sala = int(input("Introduce el id de la sala que deseas: "))
@@ -535,6 +542,7 @@ class AppCine():
                     return  # Salimos después de reservar
         print("No se encontró la sala o película indicada.")
         
+#Mateo Ursuga 2/07/2025        
 
     def verificar_funcion(self, funcion, sala):
         for i in range(sala.n_funciones):
@@ -543,6 +551,7 @@ class AppCine():
                 return False
         return True
 
+#Mateo Ursuga 2/07/2025        
 
     def mostrar_funciones(self):
         if self.n_salas == 0:
@@ -553,6 +562,7 @@ class AppCine():
             for j in range(self.salas[i].n_funciones):
                 print(f"Sala {self.salas[i].id} -- {self.salas[i].programacion[j].pelicula.nombre_es}: {self.salas[i].programacion[j].hora_inicio} - {self.salas[i].programacion[j].hora_fin}")
    
+#Mateo Ursuga 2/07/2025        
 
     def mostrar_funcion_sala(self):
         """Este método se encarga de mostrar las funciones de una sala dada."""
@@ -565,6 +575,7 @@ class AppCine():
                     print(self.salas[b].programacion[i].pelicula.nombre_es)
         except:
             print("Ingrese un valor numerico.")
+#Mateo Ursuga 2/07/2025        
 
     def eliminar_funcion_sala(self):
         """Este método se encarga de eliminar una función de una sala dada."""
@@ -626,7 +637,7 @@ class AppCine():
             except:
                 print("Ingresa un dato válido.")
     def guardar_datos(self):
-        #hecha por santiago acevedo 05/7/2025 5:00pm
+        #santiago acevedo 05/7/2025 5
         """Guarda usuarios, salas y películas en archivos pickle"""
         with open("usuarios1.pkl", "wb") as f:
             pickle.dump(self.usuarios[:self.n_usuarios], f)
@@ -637,7 +648,7 @@ class AppCine():
 
     def cargar_datos(self):
         """Carga usuarios, salas y películas desde archivos pickle si existen"""
-        #hecha por santiago acevedo 05/7/2025 7:00pm
+        #santiago acevedo 05/7/2025 
         import os
         if os.path.exists("usuarios1.pkl"):
             with open("usuarios1.pkl", "rb") as f:
