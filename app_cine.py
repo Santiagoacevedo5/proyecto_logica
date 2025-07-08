@@ -211,7 +211,7 @@ class AppCine():
                     case 5:
                         self.annadir_pelicula_funcion()
                     case 6:
-                        self.mostrar_funciones()
+                        self.modificar_funcion()
                     case 7:
                         self.eliminar_funcion_sala()
                     case 8:
@@ -431,7 +431,30 @@ class AppCine():
             print("SALA #",contador, " - ID: ", self.salas[i].id," - Número de boletas vendidas: ", self.salas[i].boletas_vendidas, " - Valor de la boleta: ", self.salas[i].valor_boleta)
             contador+=1
 
-
+    def modificar_funcion(self):
+        """Este método se encarga de modificar una función de una sala dada."""
+        self.mostrar_salas_disponibles()
+        try:
+            id_sala=int(input("Introduce el id de la sala que deseas modificar: "))
+            busqueda_sala=self.buscar_sala(id_sala)
+            if busqueda_sala!=-1:
+                self.salas[busqueda_sala].buscar_funcion(id_sala)
+                try:
+                    id_funcion=int(input("Introduce el id de la función que deseas modificar: "))
+                    funcion=self.salas[busqueda_sala].buscar_funcion(id_funcion)
+                    if funcion!=-1:
+                        nueva_funcion=Funcion()
+                        nueva_funcion.pedir_datos()
+                        self.salas[busqueda_sala].programacion[funcion]=nueva_funcion
+                        print("Función modificada correctamente.")
+                    else:
+                        print("Función no encontrada.")
+                except ValueError:
+                    print("ID de función inválido. Por favor, introduce un número entero: ")
+            else:
+                print("Sala no encontrada.")
+        except ValueError:
+            print("ID de sala inválido. Por favor, introduce un número entero: ")
     def annadir_pelicula_funcion(self):
         self.mostrar_salas_disponibles()
         try:
